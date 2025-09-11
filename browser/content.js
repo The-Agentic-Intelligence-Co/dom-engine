@@ -168,6 +168,17 @@ function extractDOM() {
   scrollInfo.horizontalScrollPercentage = Math.round((scrollInfo.scrollLeft / (scrollInfo.totalWidth - scrollInfo.viewportWidth)) * 100);
   scrollInfo.visibleHeightPercentage = Math.round((scrollInfo.viewportHeight / scrollInfo.totalHeight) * 100);
   
+  // Calcular contenido restante y límites
+  scrollInfo.remainingHeight = scrollInfo.totalHeight - (scrollInfo.scrollTop + scrollInfo.viewportHeight);
+  scrollInfo.nextContentPixel = scrollInfo.scrollTop + scrollInfo.viewportHeight;
+  scrollInfo.remainingHeightPercentage = Math.round((scrollInfo.remainingHeight / scrollInfo.totalHeight) * 100);
+  scrollInfo.scrollToSeeNewContent = scrollInfo.remainingHeight > 0 ? 1 : 0; // 1 píxel mínimo para ver contenido nuevo
+  
+  // Información específica para IA
+  scrollInfo.currentScrollPosition = scrollInfo.scrollTop;
+  scrollInfo.lastVisiblePixel = scrollInfo.scrollTop + scrollInfo.viewportHeight - 1;
+  scrollInfo.firstNewContentPixel = scrollInfo.scrollTop + scrollInfo.viewportHeight;
+  
   // Imprimir en la consola de la página web
   console.log('=== ELEMENTOS INTERACTIVOS ENCONTRADOS (PAGE CONSOLE) ===');
   console.log('\n=== INFORMACIÓN DE SCROLL ===');
@@ -176,6 +187,17 @@ function extractDOM() {
   console.log(`Scroll vertical actual: ${scrollInfo.scrollTop}px`);
   console.log(`Porcentaje de scroll vertical: ${scrollInfo.verticalScrollPercentage}%`);
   console.log(`Porcentaje de contenido visible: ${scrollInfo.visibleHeightPercentage}%`);
+  console.log(`\n--- INFORMACIÓN PARA IA ---`);
+  console.log(`Posición actual de scroll: ${scrollInfo.currentScrollPosition}px`);
+  console.log(`Último píxel visible: ${scrollInfo.lastVisiblePixel}px`);
+  console.log(`Primer píxel de contenido nuevo: ${scrollInfo.firstNewContentPixel}px`);
+  console.log(`Contenido restante: ${scrollInfo.remainingHeight}px`);
+  console.log(`\n--- CONTENIDO RESTANTE ---`);
+  console.log(`Altura restante por ver: ${scrollInfo.remainingHeight}px`);
+  console.log(`Porcentaje de contenido restante: ${scrollInfo.remainingHeightPercentage}%`);
+  console.log(`Próximo píxel de contenido nuevo: ${scrollInfo.nextContentPixel}px`);
+  console.log(`Píxeles a scrollear para ver contenido nuevo: ${scrollInfo.scrollToSeeNewContent}px`);
+  console.log(`\n--- INFORMACIÓN HORIZONTAL ---`);
   console.log(`Ancho total del contenido: ${scrollInfo.totalWidth}px`);
   console.log(`Ancho visible (viewport): ${scrollInfo.viewportWidth}px`);
   console.log(`Scroll horizontal actual: ${scrollInfo.scrollLeft}px`);
@@ -213,6 +235,37 @@ function extractDOM() {
   };
 }
 
+// Función para scrollear al primer píxel de contenido nuevo
+function scrollToNewContent() {
+  const scrollInfo = {
+    totalHeight: document.documentElement.scrollHeight,
+    viewportHeight: window.innerHeight,
+    scrollTop: window.pageYOffset || document.documentElement.scrollTop
+  };
+  
+  // Calcular el primer píxel de contenido nuevo
+  const firstNewContentPixel = scrollInfo.scrollTop + scrollInfo.viewportHeight;
+  
+  // Verificar si hay contenido nuevo para scrollear
+  if (firstNewContentPixel >= scrollInfo.totalHeight) {
+    return { success: false, error: 'No hay contenido nuevo para scrollear' };
+  }
+  
+  // Scrollear al primer píxel de contenido nuevo
+  window.scrollTo({
+    top: firstNewContentPixel,
+    behavior: 'smooth'
+  });
+  
+  console.log(`Scrolleando al píxel ${firstNewContentPixel} (primer píxel de contenido nuevo)`);
+  
+  return { 
+    success: true, 
+    scrolledTo: firstNewContentPixel,
+    previousPosition: scrollInfo.scrollTop
+  };
+}
+
 // Escuchar mensajes del popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Content script recibió mensaje:', request);
@@ -235,6 +288,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
     } catch (error) {
       console.error('Error en extractDOM:', error);
+      sendResponse({ success: false, error: error.message });
+    }
+  } else if (request.action === 'scrollToNewContent') {
+    try {
+      const result = scrollToNewContent();
+      sendResponse(result);
+    } catch (error) {
+      console.error('Error en scrollToNewContent:', error);
       sendResponse({ success: false, error: error.message });
     }
   }
