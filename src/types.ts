@@ -1,8 +1,8 @@
 /**
- * Tipos e interfaces para la biblioteca DOM Engine
+ * Types and interfaces for the DOM Engine library
  */
 
-// Tipos para elementos interactivos
+// Types for interactive elements
 export type InteractiveElementType = 'buttons' | 'inputs' | 'links' | 'editable' | 'custom' | 'selectable';
 
 export type ConstructorName = 
@@ -13,7 +13,7 @@ export type ConstructorName =
   | 'HTMLAnchorElement' 
   | 'HTMLElement';
 
-// Información de un elemento interactivo
+// Information about an interactive element
 export interface InteractiveElementInfo {
   text: string;
   constructorName: ConstructorName;
@@ -31,13 +31,13 @@ export interface InteractiveElementInfo {
   rightBrother?: string;
 }
 
-// Información de hermanos de un elemento
+// Information about element siblings
 export interface SiblingText {
   leftBrother: string;
   rightBrother: string;
 }
 
-// Información de scroll
+// Scroll information
 export interface ScrollInfo {
   totalHeight: number;
   viewportHeight: number;
@@ -57,7 +57,7 @@ export interface ScrollInfo {
   firstNewContentPixel: number;
 }
 
-// Resultado de elementos interactivos categorizados
+// Result of categorized interactive elements
 export interface CategorizedElements {
   total: number;
   buttons: InteractiveElementInfo[];
@@ -68,23 +68,23 @@ export interface CategorizedElements {
   selectable: InteractiveElementInfo[];
 }
 
-// Resultado principal de extracción DOM
+// Main DOM extraction result
 export interface DOMExtractionResult {
   interactiveElements: CategorizedElements;
   scrollInfo: ScrollInfo;
 }
 
-// Resultado de scroll
+// Scroll result
 export interface ScrollResult {
   success: boolean;
   scrolledTo?: number;
   error?: string;
 }
 
-// Función categorizadora de elementos
+// Element categorizer function
 export type ElementCategorizer = (element: Element) => boolean;
 
-// Categorizadores disponibles
+// Available categorizers
 export interface ElementCategorizers {
   buttons: ElementCategorizer;
   inputs: ElementCategorizer;
@@ -94,10 +94,10 @@ export interface ElementCategorizers {
   selectable: ElementCategorizer;
 }
 
-// Extractor de texto por tipo de elemento
+// Text extractor by element type
 export type TextExtractor = () => string;
 
-// Extractores de texto disponibles
+// Available text extractors
 export interface TextExtractors {
   HTMLInputElement: TextExtractor;
   HTMLTextAreaElement: TextExtractor;

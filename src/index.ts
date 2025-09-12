@@ -1,14 +1,14 @@
 /**
- * DOM Engine - Biblioteca TypeScript para análisis y manipulación del DOM
+ * DOM Engine - TypeScript library for DOM analysis and manipulation
  * 
  * @packageDocumentation
  */
 
-// Core functionality - Solo los métodos principales que necesitan los usuarios
+// Core functionality - Only the main methods that users need
 export { getInteractiveElements } from './core/dom-engine';
 export { scrollToNewContent } from './scroll/scroll-manager';
 
-// Types principales para el uso de la librería
+// Main types for library usage
 export type {
   DOMExtractionResult,
   CategorizedElements,

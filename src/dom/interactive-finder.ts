@@ -1,5 +1,5 @@
 /**
- * Buscador de elementos interactivos
+ * Interactive elements finder
  */
 
 import { 
@@ -12,44 +12,44 @@ import { generateUniqueId, filterValidProperties, filterStylingClasses } from '.
 import { getElementText, getSiblingText, isElementVisible } from './element-analyzer';
 
 /**
- * Obtiene selectores CSS para elementos interactivos
- * @returns Array de selectores CSS
+ * Gets CSS selectors for interactive elements
+ * @returns Array of CSS selectors
  */
 export function getInteractiveSelectors(): string[] {
   return [
-    // Elementos de formulario
+    // Form elements
     'input:not([type="hidden"])',
     'input[type="checkbox"]',
     'textarea',
     'select',
     'button',
     
-    // Enlaces
+    // Links
     'a[href]',
     'a[onclick]',
     
-    // Elementos con eventos de click
+    // Elements with click events
     '[onclick]',
     '[onmousedown]',
     '[onmouseup]',
     
-    // Elementos con roles interactivos
+    // Elements with interactive roles
     '[role="button"]',
     '[role="link"]',
     '[role="menuitem"]',
     '[role="tab"]',
     '[role="option"]',
     
-    // Elementos editables
+    // Editable elements
     '[contenteditable="true"]',
     
-    // Elementos con tabindex (navegables por teclado)
+    // Elements with tabindex (keyboard navigable)
     '[tabindex]:not([tabindex="-1"])',
     
-    // Elementos con cursor pointer
+    // Elements with pointer cursor
     '[style*="cursor: pointer"]',
     
-    // Elementos con eventos personalizados
+    // Elements with custom events
     '[data-action]',
     '[data-toggle]',
     '[data-target]'
@@ -57,15 +57,15 @@ export function getInteractiveSelectors(): string[] {
 }
 
 /**
- * Encuentra y categoriza elementos interactivos visibles en el DOM
- * @param rootElement - Elemento raíz donde buscar
- * @returns Objeto con elementos categorizados y contador total
+ * Finds and categorizes visible interactive elements in the DOM
+ * @param rootElement - Root element where to search
+ * @returns Object with categorized elements and total counter
  */
 export function findInteractiveElements(rootElement: Element): CategorizedElements {
   const selectors = getInteractiveSelectors().join(', ');
   const allElements = rootElement.querySelectorAll(selectors);
   
-  // Categorizadores
+  // Categorizers
   const categorizers: ElementCategorizers = {
     buttons: (el: Element) => el.constructor.name === 'HTMLButtonElement' || el.getAttribute('role') === 'button',
     inputs: (el: Element) => ['HTMLInputElement', 'HTMLTextAreaElement', 'HTMLSelectElement'].includes(el.constructor.name),
@@ -75,7 +75,7 @@ export function findInteractiveElements(rootElement: Element): CategorizedElemen
     selectable: () => true // fallback
   };
   
-  // Procesar elementos en una sola pasada
+  // Process elements in a single pass
   const categorized = Object.keys(categorizers).reduce((acc, key) => ({ ...acc, [key]: [] }), {}) as CategorizedElements;
   let totalProcessed = 0;
   
@@ -104,7 +104,7 @@ export function findInteractiveElements(rootElement: Element): CategorizedElemen
       ...(element.constructor.name === 'HTMLInputElement' && getSiblingText(element))
     }) as InteractiveElementInfo;
     
-    // Encontrar categoría
+    // Find category
     const category = Object.keys(categorizers).find(key => categorizers[key as keyof ElementCategorizers](element)) || 'selectable';
     (categorized[category as keyof CategorizedElements] as InteractiveElementInfo[]).push(elementInfo);
     totalProcessed++;

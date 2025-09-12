@@ -1,12 +1,12 @@
 /**
- * Gestor de scroll y navegación
+ * Scroll and navigation manager
  */
 
 import { ScrollInfo, ScrollResult } from '../types';
 
 /**
- * Calcula información detallada del scroll de la página
- * @returns Objeto con información completa del scroll
+ * Calculates detailed scroll information for the page
+ * @returns Object with complete scroll information
  */
 export function calculateScrollInfo(): ScrollInfo {
   const base = {
@@ -23,16 +23,16 @@ export function calculateScrollInfo(): ScrollInfo {
   
   return {
     ...base,
-    // Porcentajes
+    // Percentages
     verticalScrollPercentage: Math.round((base.scrollTop / (base.totalHeight - base.viewportHeight)) * 100),
     horizontalScrollPercentage: Math.round((base.scrollLeft / (base.totalWidth - base.viewportWidth)) * 100),
     visibleHeightPercentage: Math.round((base.viewportHeight / base.totalHeight) * 100),
-    // Contenido restante y límites
+    // Remaining content and limits
     remainingHeight,
     nextContentPixel,
     remainingHeightPercentage: Math.round((remainingHeight / base.totalHeight) * 100),
     scrollToSeeNewContent: remainingHeight > 0 ? 1 : 0,
-    // Información específica para IA
+    // AI-specific information
     currentScrollPosition: base.scrollTop,
     lastVisiblePixel: nextContentPixel - 1,
     firstNewContentPixel: nextContentPixel
@@ -40,18 +40,18 @@ export function calculateScrollInfo(): ScrollInfo {
 }
 
 /**
- * Scrollea al píxel especificado de contenido nuevo en la página
- * @param firstNewContentPixel - Píxel al cual scrollear
- * @param totalHeight - Altura total del documento (opcional, para validación)
- * @returns Objeto con resultado de la operación de scroll
+ * Scrolls to the specified pixel of new content on the page
+ * @param firstNewContentPixel - Pixel to scroll to
+ * @param totalHeight - Total document height (optional, for validation)
+ * @returns Object with scroll operation result
  */
 export function scrollToNewContent(firstNewContentPixel: number, totalHeight?: number): ScrollResult {
-  // Verificar si hay contenido nuevo para scrollear (solo si se proporciona totalHeight)
+  // Check if there's new content to scroll (only if totalHeight is provided)
   if (totalHeight && firstNewContentPixel >= totalHeight) {
-    return { success: false, error: 'No hay contenido nuevo para scrollear' };
+    return { success: false, error: 'No new content to scroll' };
   }
   
-  // Scrollear al píxel especificado
+  // Scroll to the specified pixel
   window.scrollTo({
     top: firstNewContentPixel,
     behavior: 'smooth'

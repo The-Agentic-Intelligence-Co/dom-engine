@@ -1,7 +1,7 @@
 {
   "name": "@agentic-intelligence/dom-engine",
   "version": "1.0.0",
-  "description": "Biblioteca TypeScript para análisis y manipulación del DOM - Enfocada en automatización web y agentes de IA",
+  "description": "A lightweight TypeScript library for DOM analysis and manipulation, designed for web automation and AI agents",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",

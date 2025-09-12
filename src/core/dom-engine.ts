@@ -1,5 +1,5 @@
 /**
- * Motor principal de análisis DOM
+ * Main DOM analysis engine
  */
 
 import { DOMExtractionResult } from '../types';
@@ -7,9 +7,9 @@ import { findInteractiveElements } from '../dom/interactive-finder';
 import { calculateScrollInfo } from '../scroll/scroll-manager';
 
 /**
- * Función principal para obtener elementos interactivos del DOM
- * @param rootElement - Elemento raíz del DOM a analizar (ej: document.body)
- * @returns Objeto con elementos interactivos e información de scroll
+ * Main function to get interactive elements from the DOM
+ * @param rootElement - Root DOM element to analyze (e.g., document.body)
+ * @returns Object with interactive elements and scroll information
  */
 export function getInteractiveElements(rootElement: Element): DOMExtractionResult {
   return {
