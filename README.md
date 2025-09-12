@@ -1,4 +1,4 @@
-# Agentic DOM Intelligence
+# Browser use made simple for agents
 
 [![npm version](https://img.shields.io/npm/v/@agentic-intelligence/dom-engine.svg)](https://www.npmjs.com/package/@agentic-intelligence/dom-engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
