@@ -6,16 +6,6 @@
 
 A lightweight TypeScript library that interprets and synthesizes website DOM structures, providing browser agents with contextual understanding for intelligent and cost-effective navigation and interaction.
 
-## Features
-
-- **Smart Analysis**: Automatically detects interactive elements (buttons, inputs, links)
-- **Advanced Categorization**: Classifies elements by type and functionality
-- **Scroll Management**: Precise scroll control with detailed metrics
-- **Visibility Filtering**: Only processes actually visible elements
-- **Strong Typing**: Fully typed with TypeScript
-- **Zero Dependencies**: Pure JavaScript, no external libraries
-- **Cross-Platform**: Works in modern browsers and Node.js
-
 ## Installation
 
 ```bash
@@ -176,10 +166,3 @@ Contributions are welcome! Please:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Inspired by modern web automation needs
-- Designed for the AI agent developer community
-- Built with TypeScript for maximum type safety
-- Published with automated CI/CD pipeline
