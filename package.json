@@ -1,7 +1,7 @@
 {
   "name": "@agentic-intelligence/dom-engine",
   "version": "1.0.1",
-  "description": "A lightweight TypeScript library for DOM analysis and manipulation, designed for web automation and AI agents",
+  "description": "Agentic DOM Intelligence - A lightweight TypeScript library for DOM analysis and manipulation, designed for web automation and AI agents",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
@@ -44,12 +44,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/dom-engine.git"
+    "url": "https://github.com/ficiency/Agentic-DOM-Intelligence.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/dom-engine/issues"
+    "url": "https://github.com/ficiency/Agentic-DOM-Intelligence/issues"
   },
-  "homepage": "https://github.com/yourusername/dom-engine#readme",
+  "homepage": "https://github.com/ficiency/Agentic-DOM-Intelligence#readme",
   "engines": {
     "node": ">=16.0.0"
   },
