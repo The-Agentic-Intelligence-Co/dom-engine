@@ -1,5 +1,8 @@
 // Content script que se ejecuta en la página web
 
+// Flag para prevenir ejecuciones múltiples de extractDOM
+let isExtractingDOM = false;
+
 // Función para verificar si un elemento está visible en pantalla
 function isElementVisible(element) {
   const rect = element.getBoundingClientRect();
@@ -271,6 +274,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Content script recibió mensaje:', request);
   
   if (request.action === 'extractDOM') {
+    // Verificar si ya se está ejecutando extractDOM
+    if (isExtractingDOM) {
+      console.log('extractDOM ya está en ejecución, ignorando solicitud duplicada');
+      sendResponse({ 
+        success: false, 
+        error: 'extractDOM ya está en ejecución' 
+      });
+      return;
+    }
+    
+    // Marcar como en ejecución
+    isExtractingDOM = true;
+    console.log('Iniciando extractDOM...');
+    
     try {
       const result = extractDOM();
       console.log('Resultado de extractDOM:', result);
@@ -289,6 +306,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     } catch (error) {
       console.error('Error en extractDOM:', error);
       sendResponse({ success: false, error: error.message });
+    } finally {
+      // Resetear el flag siempre, independientemente del resultado
+      isExtractingDOM = false;
+      console.log('extractDOM completado, flag reseteado');
     }
   } else if (request.action === 'scrollToNewContent') {
     try {
