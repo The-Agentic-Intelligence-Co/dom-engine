@@ -129,29 +129,6 @@ src/
 - 🔲 **Interaction History**: Track and maintain history of interacted elements
 - 🔲 **Iframe Processing**: Support for analyzing and interacting with iframe content
 
-## API Reference
-
-### Main Functions
-
-#### `getInteractiveElements(rootElement: Element): DOMExtractionResult`
-Gets interactive elements from the specified DOM element.
-
-**Parameters:**
-- `rootElement`: Root DOM element to analyze (e.g., `document.body`)
-
-**Returns:**
-- Object with interactive elements and scroll information
-
-#### `scrollToNewContent(firstNewContentPixel: number, totalHeight?: number): ScrollResult`
-Scrolls to the specified pixel of new content on the page.
-
-**Parameters:**
-- `firstNewContentPixel`: Pixel to scroll to (from `scrollInfo.firstNewContentPixel`)
-- `totalHeight`: Total document height (optional, for validation)
-
-**Returns:**
-- Object with scroll operation result
-
 
 ## Contributing
 
