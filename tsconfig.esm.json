@@ -2,8 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "ES2020",
-    "outDir": "./dist",
-    "outFile": "./dist/index.esm.js",
+    "outDir": "./dist/esm",
     "declaration": false,
     "declarationMap": false,
     "sourceMap": true
