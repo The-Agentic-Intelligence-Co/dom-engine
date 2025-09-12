@@ -71,29 +71,6 @@ const result = scrollToNewContent(
 );
 ```
 
-## API
-
-```bash
-# Clone repository
-git clone https://github.com/ficiency/Agentic-DOM-Intelligence.git
-cd Agentic-DOM-Intelligence
-
-# Install dependencies
-npm install
-
-# Build TypeScript
-npm run build
-
-# Watch mode
-npm run build:watch
-
-# Lint code
-npm run lint
-
-# Clean build
-npm run clean
-```
-
 ## Project Structure
 
 ```
