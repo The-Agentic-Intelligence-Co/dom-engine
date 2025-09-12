@@ -1,4 +1,4 @@
-# DOM Engine
+# DOM Intelligence for Browser Agents
 
 [![npm version](https://badge.fury.io/js/%40agentic-intelligence%2Fdom-engine.svg)](https://badge.fury.io/js/%40agentic-intelligence%2Fdom-engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
