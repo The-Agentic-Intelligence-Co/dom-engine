@@ -134,29 +134,8 @@ function findInteractiveElements() {
   };
 }
 
-function extractDOM() {
-  // Obtener el body del documento
-  const bodyElement = document.body;
-  
-  if (!bodyElement) {
-    console.error('No se encontró el elemento body');
-    return null;
-  }
-  
-  // Clonar el body para no modificar el original
-  const bodyClone = bodyElement.cloneNode(true);
-  
-  // Remover todos los elementos script del clon
-  const scripts = bodyClone.querySelectorAll('script');
-  scripts.forEach(script => script.remove());
-  
-  // Obtener el HTML del body sin scripts
-  const bodyContent = bodyClone.outerHTML;
-  
-  // Encontrar elementos interactivos visibles
-  const interactiveElements = findInteractiveElements();
-  
-  // Obtener información de scroll
+// Función para calcular información detallada del scroll
+function calculateScrollInfo() {
   const scrollInfo = {
     totalHeight: document.documentElement.scrollHeight,
     viewportHeight: window.innerHeight,
@@ -181,6 +160,34 @@ function extractDOM() {
   scrollInfo.currentScrollPosition = scrollInfo.scrollTop;
   scrollInfo.lastVisiblePixel = scrollInfo.scrollTop + scrollInfo.viewportHeight - 1;
   scrollInfo.firstNewContentPixel = scrollInfo.scrollTop + scrollInfo.viewportHeight;
+  
+  return scrollInfo;
+}
+
+function extractDOM() {
+  // Obtener el body del documento
+  const bodyElement = document.body;
+  
+  if (!bodyElement) {
+    console.error('No se encontró el elemento body');
+    return null;
+  }
+  
+  // Clonar el body para no modificar el original
+  const bodyClone = bodyElement.cloneNode(true);
+  
+  // Remover todos los elementos script del clon
+  const scripts = bodyClone.querySelectorAll('script');
+  scripts.forEach(script => script.remove());
+  
+  // Obtener el HTML del body sin scripts
+  const bodyContent = bodyClone.outerHTML;
+  
+  // Encontrar elementos interactivos visibles
+  const interactiveElements = findInteractiveElements();
+  
+  // Obtener información de scroll usando la función separada
+  const scrollInfo = calculateScrollInfo();
   
   // Imprimir en la consola de la página web
   console.log('=== ELEMENTOS INTERACTIVOS ENCONTRADOS (PAGE CONSOLE) ===');
@@ -240,14 +247,10 @@ function extractDOM() {
 
 // Función para scrollear al primer píxel de contenido nuevo
 function scrollToNewContent() {
-  const scrollInfo = {
-    totalHeight: document.documentElement.scrollHeight,
-    viewportHeight: window.innerHeight,
-    scrollTop: window.pageYOffset || document.documentElement.scrollTop
-  };
+  const scrollInfo = calculateScrollInfo();
   
   // Calcular el primer píxel de contenido nuevo
-  const firstNewContentPixel = scrollInfo.scrollTop + scrollInfo.viewportHeight;
+  const firstNewContentPixel = scrollInfo.firstNewContentPixel;
   
   // Verificar si hay contenido nuevo para scrollear
   if (firstNewContentPixel >= scrollInfo.totalHeight) {
