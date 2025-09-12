@@ -11,7 +11,7 @@ import { calculateScrollInfo } from '../scroll/scroll-manager';
  * @param rootElement - Root DOM element to analyze (e.g., document.body)
  * @returns Object with interactive elements and scroll information
  */
-export function getInteractiveElements(rootElement: Element): DOMExtractionResult {
+export function getInteractiveContext(rootElement: Element): DOMExtractionResult {
   return {
     interactiveElements: findInteractiveElements(rootElement),
     scrollInfo: calculateScrollInfo()

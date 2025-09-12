@@ -17,10 +17,10 @@ npm install @agentic-intelligence/dom-engine
 ### Basic Usage
 
 ```typescript
-import { getInteractiveElements, scrollToNewContent } from '@agentic-intelligence/dom-engine';
+import { getInteractiveContext, scrollToNewContent } from '@agentic-intelligence/dom-engine';
 
 // Get interactive elements from DOM
-const domData = getInteractiveElements(document.body);
+const domData = getInteractiveContext(document.body);
 console.log('Interactive elements:', domData.interactiveElements);
 console.log('Scroll info:', domData.scrollInfo);
 
@@ -37,10 +37,10 @@ if (scrollResult.success) {
 ### Interactive Elements Analysis
 
 ```typescript
-import { getInteractiveElements } from '@agentic-intelligence/dom-engine';
+import { getInteractiveContext } from '@agentic-intelligence/dom-engine';
 
 // Analyze entire page
-const domData = getInteractiveElements(document.body);
+const domData = getInteractiveContext(document.body);
 console.log('Buttons found:', domData.interactiveElements.buttons);
 console.log('Inputs found:', domData.interactiveElements.inputs);
 console.log('Links found:', domData.interactiveElements.links);
@@ -49,7 +49,7 @@ console.log('Total elements:', domData.interactiveElements.total);
 // Analyze specific container
 const container = document.querySelector('#my-container');
 if (container) {
-  const containerData = getInteractiveElements(container);
+  const containerData = getInteractiveContext(container);
   console.log('Container elements:', containerData.interactiveElements);
 }
 ```
@@ -57,10 +57,10 @@ if (container) {
 ### Scroll Management
 
 ```typescript
-import { getInteractiveElements, scrollToNewContent } from '@agentic-intelligence/dom-engine';
+import { getInteractiveContext, scrollToNewContent } from '@agentic-intelligence/dom-engine';
 
 // Get scroll information
-const domData = getInteractiveElements(document.body);
+const domData = getInteractiveContext(document.body);
 console.log('Scroll percentage:', domData.scrollInfo.verticalScrollPercentage);
 console.log('Remaining content:', domData.scrollInfo.remainingHeight);
 
