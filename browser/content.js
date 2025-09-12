@@ -3,6 +3,49 @@
 // Flag para prevenir ejecuciones múltiples de extractDOM
 let isExtractingDOM = false;
 
+// Función para obtener el texto de un elemento según su tipo
+function getElementText(element) {
+  // Para inputs, usar value o placeholder
+  if (element.tagName === 'INPUT') {
+    return element.value || element.placeholder || '';
+  }
+  
+  // Para textareas, usar value
+  if (element.tagName === 'TEXTAREA') {
+    return element.value || '';
+  }
+  
+  // Para selects, usar el texto de la opción seleccionada
+  if (element.tagName === 'SELECT') {
+    return element.selectedOptions[0]?.textContent || '';
+  }
+  
+  // Para otros elementos, usar textContent
+  return element.textContent?.trim() || '';
+}
+
+// Función para obtener hermanos inmediatos de un elemento
+function getSiblingText(element) {
+  const siblings = {
+    leftBrother: '',
+    rightBrother: ''
+  };
+  
+  // Obtener hermano anterior
+  const previousSibling = element.previousElementSibling;
+  if (previousSibling) {
+    siblings.leftBrother = getElementText(previousSibling);
+  }
+  
+  // Obtener hermano posterior
+  const nextSibling = element.nextElementSibling;
+  if (nextSibling) {
+    siblings.rightBrother = getElementText(nextSibling);
+  }
+  
+  return siblings;
+}
+
 // Función para verificar si un elemento está visible en pantalla
 function isElementVisible(element) {
   const rect = element.getBoundingClientRect();
@@ -36,6 +79,7 @@ function findInteractiveElements() {
   const interactiveSelectors = [
     // Elementos de formulario
     'input:not([type="hidden"])',
+    'input[type="checkbox"]',
     'textarea',
     'select',
     'button',
@@ -88,7 +132,7 @@ function findInteractiveElements() {
   };
   
   visibleInteractive.forEach(element => {
-    const textContent = element.textContent?.trim();
+    const textContent = getElementText(element);
     
     // Filtrar elementos sin texto visible
     if (!textContent || textContent.length === 0) {
@@ -110,6 +154,13 @@ function findInteractiveElements() {
         title: element.getAttribute('title') || 'N/A'
       }
     };
+    
+    // Para inputs, agregar información de hermanos
+    if (element.tagName === 'INPUT') {
+      const siblings = getSiblingText(element);
+      elementInfo.leftBrother = siblings.leftBrother;
+      elementInfo.rightBrother = siblings.rightBrother;
+    }
     
     // Categorizar
     if (element.tagName === 'BUTTON' || element.getAttribute('role') === 'button') {
@@ -232,6 +283,11 @@ function extractDOM() {
       console.log(`   Tamaño: ${Math.round(element.rect.width)}x${Math.round(element.rect.height)}`);
       console.log(`   Href: ${element.attributes.href}`);
       console.log(`   Title: ${element.attributes.title}`);
+      
+      // Mostrar información de hermanos para inputs
+      if (element.tagName === 'INPUT' && (element.leftBrother || element.rightBrother)) {
+        console.log(`   Hermanos: ${element.leftBrother ? `Izq: "${element.leftBrother}"` : ''} ${element.rightBrother ? `Der: "${element.rightBrother}"` : ''}`);
+      }
       });
     }
   });
