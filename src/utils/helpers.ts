@@ -23,7 +23,7 @@ export function cleanText(text: string | null | undefined): string {
  * @param obj - Objeto a filtrar
  * @returns Objeto con solo propiedades válidas
  */
-export function filterValidProperties<T extends Record<string, any>>(obj: T): Partial<T> {
+export function filterValidProperties<T extends Record<string, unknown>>(obj: T): Partial<T> {
   return Object.fromEntries(
     Object.entries(obj).filter(([, value]) => 
       value !== 'N/A' && 
@@ -46,7 +46,7 @@ export function filterStylingClasses(className: string | null | undefined): stri
     .filter(cls => {
       const trimmed = cls.trim();
       // Filtrar clases que contienen caracteres típicos de estilado
-      return !trimmed.match(/^[a-z]+-[a-z0-9\/-]+$|^[a-z]+:\w+|^#[0-9a-f]{3,6}$|^(bg|text|border|w|h|p|m|flex|grid|absolute|relative|rounded|shadow|hover|focus|btn|card|container|row|col)-/) && 
+      return !trimmed.match(/^[a-z]+-[a-z0-9/-]+$|^[a-z]+:\w+|^#[0-9a-f]{3,6}$|^(bg|text|border|w|h|p|m|flex|grid|absolute|relative|rounded|shadow|hover|focus|btn|card|container|row|col)-/) && 
              !['flex', 'grid', 'block', 'hidden', 'visible', 'absolute', 'relative', 'fixed', 'sticky', 'primary', 'secondary', 'success', 'warning', 'error'].includes(trimmed);
     })
     .join(' ');
