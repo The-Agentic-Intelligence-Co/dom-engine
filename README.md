@@ -1,10 +1,10 @@
-# Browser use made simple for agents
+Agentic DOM Intelligence
 
 [![npm version](https://img.shields.io/npm/v/@agentic-intelligence/dom-engine.svg)](https://www.npmjs.com/package/@agentic-intelligence/dom-engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
-A lightweight TypeScript library that interprets and synthesizes website DOM structures, providing browser agents with contextual understanding for intelligent and cost-effective navigation and interaction.
+A simple, lightweight library that turns website DOMs into actionable context for browser agents.
 
 ## Installation
 
@@ -24,13 +24,10 @@ const domData = getInteractiveContext(document.body);
 console.log('Interactive elements:', domData.interactiveElements);
 console.log('Scroll info:', domData.scrollInfo);
 
-// Scroll to new content
-const scrollResult = scrollToNewContent(
-  domData.scrollInfo.firstNewContentPixel, 
-  domData.scrollInfo.totalHeight
-);
+// Scroll to new content (no parameters needed!)
+const scrollResult = scrollToNewContent();
 if (scrollResult.success) {
-  console.log('Scroll successful');
+  console.log('Scroll successful to:', scrollResult.scrolledTo);
 }
 ```
 
@@ -64,12 +61,15 @@ const domData = getInteractiveContext(document.body);
 console.log('Scroll percentage:', domData.scrollInfo.verticalScrollPercentage);
 console.log('Remaining content:', domData.scrollInfo.remainingHeight);
 
-// Scroll to new content
-const result = scrollToNewContent(
-  domData.scrollInfo.firstNewContentPixel, 
-  domData.scrollInfo.totalHeight
-);
+// Scroll to new content (automatically handles scroll to top if no new content)
+const result = scrollToNewContent();
+console.log('Scrolled to:', result.scrolledTo);
 ```
+
+**Smart Scroll Behavior:**
+- If there's new content below: scrolls to the next unseen content
+- If no new content available: scrolls back to the top (pixel 0)
+- Always returns `success: true` with the scroll position
 
 ## Project Structure
 
@@ -98,9 +98,8 @@ src/
 
 - ✅ **Smart Element Analysis**: Automatically detects interactive elements (buttons, inputs, links)
 - ✅ **Advanced Categorization**: Classifies elements by type and functionality
-- ✅ **Scroll Management**: Precise scroll control with detailed metrics
+- ✅ **Smart Scroll Management**: Intelligent scroll control with automatic top return
 - ✅ **Visibility Filtering**: Only processes actually visible elements
-- ✅ **Strong Typing**: Fully typed with TypeScript
 - ✅ **Zero Dependencies**: Pure JavaScript, no external libraries
 - ✅ **Cross-Platform**: Works in modern browsers and Node.js
 - 🔲 **Interaction History**: Track and maintain history of interacted elements

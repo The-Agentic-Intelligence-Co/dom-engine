@@ -40,25 +40,35 @@ export function calculateScrollInfo(): ScrollInfo {
 }
 
 /**
- * Scrolls to the specified pixel of new content on the page
- * @param firstNewContentPixel - Pixel to scroll to
- * @param totalHeight - Total document height (optional, for validation)
+ * Scrolls to new content on the page using current scroll information
  * @returns Object with scroll operation result
  */
-export function scrollToNewContent(firstNewContentPixel: number, totalHeight?: number): ScrollResult {
-  // Check if there's new content to scroll (only if totalHeight is provided)
-  if (totalHeight && firstNewContentPixel >= totalHeight) {
-    return { success: false, error: 'No new content to scroll' };
+export function scrollToNewContent(): ScrollResult {
+  // Get current scroll information
+  const scrollInfo = calculateScrollInfo();
+  
+  // Check if there's new content to scroll
+  if (scrollInfo.firstNewContentPixel >= scrollInfo.totalHeight) {
+    // If no new content, scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    
+    return { 
+      success: true, 
+      scrolledTo: 0
+    };
   }
   
-  // Scroll to the specified pixel
+  // Scroll to the first new content pixel
   window.scrollTo({
-    top: firstNewContentPixel,
+    top: scrollInfo.firstNewContentPixel,
     behavior: 'smooth'
   });
   
   return { 
     success: true, 
-    scrolledTo: firstNewContentPixel
+    scrolledTo: scrollInfo.firstNewContentPixel
   };
 }
