@@ -182,3 +182,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Inspired by modern web automation needs
 - Designed for the AI agent developer community
 - Built with TypeScript for maximum type safety
+- Published with automated CI/CD pipeline
