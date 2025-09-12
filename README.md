@@ -1,6 +1,6 @@
 # DOM Engine
 
-[![npm version](https://badge.fury.io/js/%40dom-engine%2Fcore.svg)](https://badge.fury.io/js/%40dom-engine%2Fcore)
+[![npm version](https://badge.fury.io/js/%40agentic-intelligence%2Fdom-engine.svg)](https://badge.fury.io/js/%40agentic-intelligence%2Fdom-engine)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
@@ -9,7 +9,7 @@ A lightweight TypeScript library that interprets and synthesizes website DOM str
 ## Installation
 
 ```bash
-npm install @dom-engine/core
+npm install @agentic-intelligence/dom-engine
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ npm install @dom-engine/core
 ### Basic Usage
 
 ```typescript
-import { getInteractiveElements, scrollToNewContent } from '@dom-engine/core';
+import { getInteractiveElements, scrollToNewContent } from '@agentic-intelligence/dom-engine';
 
 // Get interactive elements from DOM
 const domData = getInteractiveElements(document.body);
@@ -37,7 +37,7 @@ if (scrollResult.success) {
 ### Interactive Elements Analysis
 
 ```typescript
-import { getInteractiveElements } from '@dom-engine/core';
+import { getInteractiveElements } from '@agentic-intelligence/dom-engine';
 
 // Analyze entire page
 const domData = getInteractiveElements(document.body);
@@ -57,7 +57,7 @@ if (container) {
 ### Scroll Management
 
 ```typescript
-import { getInteractiveElements, scrollToNewContent } from '@dom-engine/core';
+import { getInteractiveElements, scrollToNewContent } from '@agentic-intelligence/dom-engine';
 
 // Get scroll information
 const domData = getInteractiveElements(document.body);

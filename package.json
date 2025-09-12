@@ -1,5 +1,5 @@
 {
-  "name": "@dom-engine/core",
+  "name": "@agentic-intelligence/dom-engine",
   "version": "1.0.0",
   "description": "Biblioteca TypeScript para análisis y manipulación del DOM - Enfocada en automatización web y agentes de IA",
   "main": "dist/index.js",
