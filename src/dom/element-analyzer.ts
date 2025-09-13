@@ -83,12 +83,6 @@ export function hasSvgIcon(element: Element): boolean {
     return false;
   }
   
-  // Check first two immediate children for SVG elements
-  const firstChild = element.firstElementChild;
-  const secondChild = firstChild?.nextElementSibling;
-  
-  return (
-    (firstChild?.tagName === 'SVG') ||
-    (secondChild?.tagName === 'SVG')
-  );
+  // Check all descendants for SVG elements
+  return element.querySelector('svg') !== null;
 }
