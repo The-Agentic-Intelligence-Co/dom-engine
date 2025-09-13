@@ -9,7 +9,7 @@ import {
   ConstructorName 
 } from '../types';
 import { generateUniqueId, filterValidProperties, filterStylingClasses } from '../utils/helpers';
-import { getElementText, getSiblingText, isElementVisible } from './element-analyzer';
+import { getElementText, getSiblingText, isElementVisible, hasSvgIcon } from './element-analyzer';
 
 /**
  * Gets CSS selectors for interactive elements
@@ -82,8 +82,16 @@ export function findInteractiveElements(rootElement: Element): CategorizedElemen
   for (const element of allElements) {
     if (!isElementVisible(element)) continue;
     
-    const textContent = getElementText(element);
-    if (!textContent) continue;
+    let textContent = getElementText(element);
+    const isButtonWithSvgIcon = !textContent && hasSvgIcon(element);
+    
+    // Skip elements without text content, unless it's a button with SVG icon
+    if (!textContent && !isButtonWithSvgIcon) continue;
+    
+    // Handle button with SVG icon - assign text content
+    if (isButtonWithSvgIcon) {
+      textContent = '[This is an Icon Button]';
+    }
     
     const domId = generateUniqueId();
     element.setAttribute('agentic-purpose-id', domId);
@@ -101,6 +109,7 @@ export function findInteractiveElements(rootElement: Element): CategorizedElemen
       role: element.getAttribute('role'),
       href: element.getAttribute('href'),
       title: element.getAttribute('title'),
+      ariaLabel: element.getAttribute('aria-label'),
       ...(element.constructor.name === 'HTMLInputElement' && getSiblingText(element))
     }) as InteractiveElementInfo;
     

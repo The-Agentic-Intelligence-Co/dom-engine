@@ -71,3 +71,24 @@ export function isElementVisible(element: Element): boolean {
     rect.width > 0 && rect.height > 0
   );
 }
+
+/**
+ * Checks if a button element has SVG icon children (for icon-only buttons)
+ * @param element - Button element to check
+ * @returns true if the button has SVG children, false otherwise
+ */
+export function hasSvgIcon(element: Element): boolean {
+  // Only check buttons
+  if (element.constructor.name !== 'HTMLButtonElement' && element.getAttribute('role') !== 'button') {
+    return false;
+  }
+  
+  // Check first two immediate children for SVG elements
+  const firstChild = element.firstElementChild;
+  const secondChild = firstChild?.nextElementSibling;
+  
+  return (
+    (firstChild?.tagName === 'SVG') ||
+    (secondChild?.tagName === 'SVG')
+  );
+}

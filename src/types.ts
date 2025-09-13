@@ -27,6 +27,7 @@ export interface InteractiveElementInfo {
   role?: string | null;
   href?: string | null;
   title?: string | null;
+  ariaLabel?: string | null;
   leftBrother?: string;
   rightBrother?: string;
 }
