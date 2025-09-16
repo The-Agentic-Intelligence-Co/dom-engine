@@ -19,8 +19,8 @@ npm install @agentic-intelligence/dom-engine
 ```typescript
 import { getInteractiveContext, scrollToNewContent } from '@agentic-intelligence/dom-engine';
 
-// Get interactive elements from DOM
-const domData = getInteractiveContext(document.body);
+// Get interactive elements from DOM (no parameters needed!)
+const domData = getInteractiveContext();
 console.log('Interactive elements:', domData.interactiveElements);
 console.log('Scroll info:', domData.scrollInfo);
 
@@ -36,19 +36,12 @@ if (scrollResult.success) {
 ```typescript
 import { getInteractiveContext } from '@agentic-intelligence/dom-engine';
 
-// Analyze entire page
-const domData = getInteractiveContext(document.body);
+// Analyze entire page (no parameters needed!)
+const domData = getInteractiveContext();
 console.log('Buttons found:', domData.interactiveElements.buttons);
 console.log('Inputs found:', domData.interactiveElements.inputs);
 console.log('Links found:', domData.interactiveElements.links);
 console.log('Total elements:', domData.interactiveElements.total);
-
-// Analyze specific container
-const container = document.querySelector('#my-container');
-if (container) {
-  const containerData = getInteractiveContext(container);
-  console.log('Container elements:', containerData.interactiveElements);
-}
 ```
 
 ### Scroll Management
@@ -56,8 +49,8 @@ if (container) {
 ```typescript
 import { getInteractiveContext, scrollToNewContent } from '@agentic-intelligence/dom-engine';
 
-// Get scroll information
-const domData = getInteractiveContext(document.body);
+// Get scroll information (no parameters needed!)
+const domData = getInteractiveContext();
 console.log('Scroll percentage:', domData.scrollInfo.verticalScrollPercentage);
 console.log('Remaining content:', domData.scrollInfo.remainingHeight);
 

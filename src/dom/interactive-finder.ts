@@ -58,12 +58,11 @@ export function getInteractiveSelectors(): string[] {
 
 /**
  * Finds and categorizes visible interactive elements in the DOM
- * @param rootElement - Root element where to search
  * @returns Object with categorized elements and total counter
  */
-export function findInteractiveElements(rootElement: Element): CategorizedElements {
+export function findInteractiveElements(): CategorizedElements {
   const selectors = getInteractiveSelectors().join(', ');
-  const allElements = rootElement.querySelectorAll(selectors);
+  const allElements = document.body.querySelectorAll(selectors);
   
   // Categorizers
   const categorizers: ElementCategorizers = {

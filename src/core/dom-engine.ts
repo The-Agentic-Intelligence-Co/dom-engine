@@ -8,12 +8,11 @@ import { calculateScrollInfo } from '../scroll/scroll-manager';
 
 /**
  * Main function to get interactive elements from the DOM
- * @param rootElement - Root DOM element to analyze (e.g., document.body)
  * @returns Object with interactive elements and scroll information
  */
-export function getInteractiveContext(rootElement: Element): DOMExtractionResult {
+export function getInteractiveContext(): DOMExtractionResult {
   return {
-    interactiveElements: findInteractiveElements(rootElement),
+    interactiveElements: findInteractiveElements(),
     scrollInfo: calculateScrollInfo()
   };
 }
