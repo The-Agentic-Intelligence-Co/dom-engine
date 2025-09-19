@@ -24,6 +24,9 @@ const domData = getInteractiveContext();
 console.log('Interactive elements:', domData.interactiveElements);
 console.log('Scroll info:', domData.scrollInfo);
 
+// With element tracking (adds agentic-purpose-id attributes)
+const domDataWithTracking = getInteractiveContext({ withTracking: true });
+
 // Scroll to new content (no parameters needed!)
 const scrollResult = scrollToNewContent();
 if (scrollResult.success) {

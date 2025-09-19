@@ -14,5 +14,6 @@ export type {
   CategorizedElements,
   InteractiveElementInfo,
   ScrollResult,
-  InteractiveElementType
+  InteractiveElementType,
+  DOMAnalysisOptions
 } from './types';

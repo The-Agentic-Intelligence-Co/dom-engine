@@ -6,7 +6,8 @@ import {
   InteractiveElementInfo, 
   CategorizedElements, 
   ElementCategorizers, 
-  ConstructorName 
+  ConstructorName,
+  DOMAnalysisOptions
 } from '../types';
 import { generateUniqueId, filterValidProperties, filterStylingClasses } from '../utils/helpers';
 import { getElementText, getSiblingText, isElementVisible, hasSvgIcon } from './element-analyzer';
@@ -58,9 +59,11 @@ export function getInteractiveSelectors(): string[] {
 
 /**
  * Finds and categorizes visible interactive elements in the DOM
+ * @param options - Configuration options for element analysis
  * @returns Object with categorized elements and total counter
  */
-export function findInteractiveElements(): CategorizedElements {
+export function findInteractiveElements(options: DOMAnalysisOptions = {}): CategorizedElements {
+  const { withTracking = false } = options;
   const selectors = getInteractiveSelectors().join(', ');
   const allElements = document.body.querySelectorAll(selectors);
   
@@ -92,13 +95,16 @@ export function findInteractiveElements(): CategorizedElements {
       textContent = '[This is an Icon Button]';
     }
     
-    const domId = generateUniqueId();
-    element.setAttribute('agentic-purpose-id', domId);
+    // Only add tracking ID if withTracking is enabled
+    const domId = withTracking ? generateUniqueId() : '';
+    if (withTracking) {
+      element.setAttribute('agentic-purpose-id', domId);
+    }
     
     const elementInfo = filterValidProperties({
       text: textContent,
       constructorName: element.constructor.name as ConstructorName,
-      agenticPurposeId: domId,
+      agenticPurposeId: withTracking ? domId : '',
       type: (element as HTMLInputElement).type,
       id: element.id?.substring(0, 40),
       className: filterStylingClasses(element.className),

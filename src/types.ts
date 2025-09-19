@@ -105,3 +105,8 @@ export interface TextExtractors {
   HTMLSelectElement: TextExtractor;
   DEFAULT: TextExtractor;
 }
+
+// DOM analysis options
+export interface DOMAnalysisOptions {
+  withTracking?: boolean;
+}
