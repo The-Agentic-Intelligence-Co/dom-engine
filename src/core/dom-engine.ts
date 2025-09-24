@@ -3,7 +3,7 @@
  */
 
 import { DOMExtractionResult, DOMAnalysisOptions } from '../types';
-import { findInteractiveElements } from '../dom/interactive-finder';
+import { findInteractiveElements } from '../read/interactive-finder';
 import { calculateScrollInfo } from '../scroll/scroll-manager';
 
 /**

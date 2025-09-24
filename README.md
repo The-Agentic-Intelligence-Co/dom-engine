@@ -80,7 +80,7 @@ console.log('Scrolled to:', result.scrolledTo);
 src/
 ├── core/
 │   └── dom-engine.ts          # Main engine
-├── dom/
+├── read/
 │   ├── element-analyzer.ts    # Element analysis
 │   └── interactive-finder.ts  # Interactive element finder
 ├── scroll/
