@@ -106,7 +106,14 @@ export interface TextExtractors {
   DEFAULT: TextExtractor;
 }
 
+// DOM context interface for cross-frame/extension support
+export interface DOMContext {
+  document: Document;
+  window: Window;
+}
+
 // DOM analysis options
 export interface DOMAnalysisOptions {
-  withTracking?: boolean;
+  injectTrackers?: boolean;
+  context?: DOMContext;
 }

@@ -2,7 +2,7 @@
  * DOM element analyzer
  */
 
-import { ConstructorName, TextExtractors, SiblingText } from '../types';
+import { ConstructorName, TextExtractors, SiblingText, DOMContext } from '../types';
 import { cleanText } from '../utils/helpers';
 
 /**
@@ -54,16 +54,18 @@ export function getSiblingText(element: Element): SiblingText {
 /**
  * Checks if an element is visible on screen
  * @param element - DOM element to check
+ * @param context - DOM context (optional, defaults to current window/document)
  * @returns true if the element is visible, false otherwise
  */
-export function isElementVisible(element: Element): boolean {
+export function isElementVisible(element: Element, context?: DOMContext): boolean {
+  const domContext = context || { document, window };
   const rect = element.getBoundingClientRect();
-  const style = window.getComputedStyle(element);
+  const style = domContext.window.getComputedStyle(element);
   
   return (
     // In viewport
     rect.top >= 0 && rect.left >= 0 && 
-    rect.bottom <= window.innerHeight && rect.right <= window.innerWidth &&
+    rect.bottom <= domContext.window.innerHeight && rect.right <= domContext.window.innerWidth &&
     // Not hidden by CSS
     style.display !== 'none' && style.visibility !== 'hidden' && 
     style.opacity !== '0' && !(element as HTMLElement).hidden &&

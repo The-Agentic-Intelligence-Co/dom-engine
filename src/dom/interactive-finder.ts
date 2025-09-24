@@ -63,9 +63,12 @@ export function getInteractiveSelectors(): string[] {
  * @returns Object with categorized elements and total counter
  */
 export function findInteractiveElements(options: DOMAnalysisOptions = {}): CategorizedElements {
-  const { withTracking = false } = options;
+  const { injectTrackers = false, context } = options;
+  
+  // Use provided context or default to current document/window
+  const domContext = context || { document, window };
   const selectors = getInteractiveSelectors().join(', ');
-  const allElements = document.body.querySelectorAll(selectors);
+  const allElements = domContext.document.body.querySelectorAll(selectors);
   
   // Categorizers
   const categorizers: ElementCategorizers = {
@@ -82,7 +85,7 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
   let totalProcessed = 0;
   
   for (const element of allElements) {
-    if (!isElementVisible(element)) continue;
+    if (!isElementVisible(element, domContext)) continue;
     
     let textContent = getElementText(element);
     const isButtonWithSvgIcon = !textContent && hasSvgIcon(element);
@@ -95,16 +98,16 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
       textContent = '[This is an Icon Button]';
     }
     
-    // Only add tracking ID if withTracking is enabled
-    const domId = withTracking ? generateUniqueId() : '';
-    if (withTracking) {
+    // Only add tracking ID if injectTrackers is enabled
+    const domId = injectTrackers ? generateUniqueId() : '';
+    if (injectTrackers) {
       element.setAttribute('agentic-purpose-id', domId);
     }
     
     const elementInfo = filterValidProperties({
       text: textContent,
       constructorName: element.constructor.name as ConstructorName,
-      agenticPurposeId: withTracking ? domId : '',
+      agenticPurposeId: injectTrackers ? domId : '',
       type: (element as HTMLInputElement).type,
       id: element.id?.substring(0, 40),
       className: filterStylingClasses(element.className),

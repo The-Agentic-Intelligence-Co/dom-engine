@@ -2,20 +2,22 @@
  * Scroll and navigation manager
  */
 
-import { ScrollInfo, ScrollResult } from '../types';
+import { ScrollInfo, ScrollResult, DOMContext } from '../types';
 
 /**
  * Calculates detailed scroll information for the page
+ * @param context - DOM context (optional, defaults to current window/document)
  * @returns Object with complete scroll information
  */
-export function calculateScrollInfo(): ScrollInfo {
+export function calculateScrollInfo(context?: DOMContext): ScrollInfo {
+  const domContext = context || { document, window };
   const base = {
-    totalHeight: document.documentElement.scrollHeight,
-    viewportHeight: window.innerHeight,
-    scrollTop: window.pageYOffset || document.documentElement.scrollTop,
-    scrollLeft: window.pageXOffset || document.documentElement.scrollLeft,
-    totalWidth: document.documentElement.scrollWidth,
-    viewportWidth: window.innerWidth
+    totalHeight: domContext.document.documentElement.scrollHeight,
+    viewportHeight: domContext.window.innerHeight,
+    scrollTop: domContext.window.pageYOffset || domContext.document.documentElement.scrollTop,
+    scrollLeft: domContext.window.pageXOffset || domContext.document.documentElement.scrollLeft,
+    totalWidth: domContext.document.documentElement.scrollWidth,
+    viewportWidth: domContext.window.innerWidth
   };
   
   const remainingHeight = base.totalHeight - (base.scrollTop + base.viewportHeight);
@@ -41,16 +43,19 @@ export function calculateScrollInfo(): ScrollInfo {
 
 /**
  * Scrolls to new content on the page using current scroll information
+ * @param context - DOM context (optional, defaults to current window/document)
  * @returns Object with scroll operation result
  */
-export function scrollToNewContent(): ScrollResult {
+export function scrollToNewContent(context?: DOMContext): ScrollResult {
+  const domContext = context || { document, window };
+  
   // Get current scroll information
-  const scrollInfo = calculateScrollInfo();
+  const scrollInfo = calculateScrollInfo(domContext);
   
   // Check if there's new content to scroll
   if (scrollInfo.firstNewContentPixel >= scrollInfo.totalHeight) {
     // If no new content, scroll to top
-    window.scrollTo({
+    domContext.window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
@@ -62,7 +67,7 @@ export function scrollToNewContent(): ScrollResult {
   }
   
   // Scroll to the first new content pixel
-  window.scrollTo({
+  domContext.window.scrollTo({
     top: scrollInfo.firstNewContentPixel,
     behavior: 'smooth'
   });

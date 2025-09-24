@@ -15,5 +15,6 @@ export type {
   InteractiveElementInfo,
   ScrollResult,
   InteractiveElementType,
-  DOMAnalysisOptions
+  DOMAnalysisOptions,
+  DOMContext
 } from './types';

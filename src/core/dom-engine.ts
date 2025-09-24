@@ -12,10 +12,10 @@ import { calculateScrollInfo } from '../scroll/scroll-manager';
  * @returns Object with interactive elements and scroll information
  */
 export function getInteractiveContext(options: DOMAnalysisOptions = {}): DOMExtractionResult {
-  const { withTracking = false } = options;
+  const { injectTrackers = false, context } = options;
   
   return {
-    interactiveElements: findInteractiveElements({ withTracking }),
-    scrollInfo: calculateScrollInfo()
+    interactiveElements: findInteractiveElements({ injectTrackers, ...(context && { context }) }),
+    scrollInfo: calculateScrollInfo(context)
   };
 }

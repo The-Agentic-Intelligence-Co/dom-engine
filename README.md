@@ -24,8 +24,15 @@ const domData = getInteractiveContext();
 console.log('Interactive elements:', domData.interactiveElements);
 console.log('Scroll info:', domData.scrollInfo);
 
-// With element tracking (adds agentic-purpose-id attributes)
-const domDataWithTracking = getInteractiveContext({ withTracking: true });
+// With interactive elements tracking (adds agentic-purpose-id attributes)
+const domDataWithTracking = getInteractiveContext({ injectTrackers: true });
+
+// With custom DOM context (for extensions, iframes, etc.)
+const customContext = { document: someDocument, window: someWindow };
+const domDataCustom = getInteractiveContext({ 
+  injectTrackers: true,
+  context: customContext 
+});
 
 // Scroll to new content (no parameters needed!)
 const scrollResult = scrollToNewContent();
@@ -98,6 +105,8 @@ src/
 - ✅ **Visibility Filtering**: Only processes actually visible elements
 - ✅ **Zero Dependencies**: Pure JavaScript, no external libraries
 - ✅ **Cross-Platform**: Works in modern browsers and Node.js
+- ✅ **Custom DOM Context**: Support for analyzing different document contexts (extensions, iframes)
+- ✅ **Element Tracking**: Inject unique IDs for agent tracking and interaction
 - 🔲 **Interaction History**: Track and maintain history of interacted elements
 - 🔲 **Iframe Processing**: Support for analyzing and interacting with iframe content
 
