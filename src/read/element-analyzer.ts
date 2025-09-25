@@ -24,7 +24,10 @@ export function getElementText(element: Element): string {
     
     HTMLTextAreaElement: () => {
       const textarea = element as HTMLTextAreaElement;
-      return textarea.value || '';
+      return [
+        textarea.placeholder && `Placeholder: ${textarea.placeholder}`,
+        textarea.value && `Value: ${textarea.value}`
+      ].filter(Boolean).join(' | ');
     },
     
     HTMLSelectElement: () => {
