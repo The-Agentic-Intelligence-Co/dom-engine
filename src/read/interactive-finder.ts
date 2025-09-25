@@ -111,7 +111,6 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
       type: (element as HTMLInputElement).type,
       id: element.id?.substring(0, 40),
       className: filterStylingClasses(element.className),
-      rect: element.getBoundingClientRect(),
       onclick: (element as HTMLElement).onclick ? 'Yes' : 'No',
       tabindex: (element as HTMLElement).tabIndex,
       role: element.getAttribute('role'),

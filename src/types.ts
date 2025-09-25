@@ -23,7 +23,6 @@ export interface InteractiveElementInfo {
   type?: string;
   id?: string;
   className: string;
-  rect: DOMRect;
   onclick: 'Yes' | 'No';
   tabindex: number;
   role?: string | null;
