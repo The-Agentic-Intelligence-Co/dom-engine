@@ -2,7 +2,7 @@
  * DOM element analyzer
  */
 
-import { ConstructorName, TextExtractors, SiblingText, DOMContext } from '../types';
+import { TagName, TextExtractors, SiblingText, DOMContext } from '../types';
 import { cleanText } from '../utils/helpers';
 
 /**
@@ -11,10 +11,10 @@ import { cleanText } from '../utils/helpers';
  * @returns Extracted text from the element
  */
 export function getElementText(element: Element): string {
-  const constructorName = element.constructor.name as ConstructorName;
+  const tagName = element.tagName as TagName;
   
   const textExtractors: TextExtractors = {
-    HTMLInputElement: () => {
+    INPUT: () => {
       const input = element as HTMLInputElement;
       return [
         input.placeholder && `Placeholder: ${input.placeholder}`,
@@ -24,7 +24,7 @@ export function getElementText(element: Element): string {
       ].filter(Boolean).join(' | ');
     },
     
-    HTMLTextAreaElement: () => {
+    TEXTAREA: () => {
       const textarea = element as HTMLTextAreaElement;
       return [
         textarea.placeholder && `Placeholder: ${textarea.placeholder}`,
@@ -34,7 +34,7 @@ export function getElementText(element: Element): string {
       ].filter(Boolean).join(' | ');
     },
     
-    HTMLSelectElement: () => {
+    SELECT: () => {
       const select = element as HTMLSelectElement;
       return select.selectedOptions[0]?.textContent || '';
     },
@@ -42,7 +42,7 @@ export function getElementText(element: Element): string {
     DEFAULT: () => element.textContent || ''
   };
   
-  const extractor = textExtractors[constructorName as keyof TextExtractors] || textExtractors.DEFAULT;
+  const extractor = textExtractors[tagName as keyof TextExtractors] || textExtractors.DEFAULT;
   return cleanText(extractor());
 }
 
@@ -88,7 +88,7 @@ export function isElementVisible(element: Element, context?: DOMContext): boolea
  */
 export function hasSvgIcon(element: Element): boolean {
   // Only check buttons
-  if (element.constructor.name !== 'HTMLButtonElement' && element.getAttribute('role') !== 'button') {
+  if (element.tagName !== 'BUTTON' && element.getAttribute('role') !== 'button') {
     return false;
   }
   

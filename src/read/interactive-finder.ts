@@ -6,7 +6,7 @@ import {
   InteractiveElementInfo, 
   CategorizedElements, 
   ElementCategorizers, 
-  ConstructorName,
+  TagName,
   DOMAnalysisOptions
 } from '../types';
 import { generateUniqueId, filterValidProperties, filterStylingClasses } from '../utils/helpers';
@@ -72,9 +72,9 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
   
   // Categorizers
   const categorizers: ElementCategorizers = {
-    buttons: (el: Element) => el.constructor.name === 'HTMLButtonElement' || el.getAttribute('role') === 'button',
-    inputs: (el: Element) => ['HTMLInputElement', 'HTMLTextAreaElement', 'HTMLSelectElement'].includes(el.constructor.name),
-    links: (el: Element) => el.constructor.name === 'HTMLAnchorElement',
+    buttons: (el: Element) => el.tagName === 'BUTTON' || el.getAttribute('role') === 'button',
+    inputs: (el: Element) => ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName),
+    links: (el: Element) => el.tagName === 'A',
     editable: (el: Element) => (el as HTMLElement).contentEditable === 'true',
     custom: (el: Element) => !!(el as HTMLElement).onclick || !!el.getAttribute('onclick'),
     selectable: () => true // fallback
@@ -106,7 +106,7 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     
     const elementInfo = filterValidProperties({
       text: textContent,
-      constructorName: element.constructor.name as ConstructorName,
+      tagName: element.tagName as TagName,
       agenticPurposeId: injectTrackers ? domId : '',
       type: (element as HTMLInputElement).type,
       id: element.id?.substring(0, 40),
@@ -118,7 +118,7 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
       href: element.getAttribute('href'),
       title: element.getAttribute('title'),
       ariaLabel: element.getAttribute('aria-label'),
-      ...(element.constructor.name === 'HTMLInputElement' && getSiblingText(element))
+      ...(element.tagName === 'INPUT' && getSiblingText(element))
     }) as InteractiveElementInfo;
     
     // Find category

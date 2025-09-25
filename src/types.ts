@@ -5,18 +5,20 @@
 // Types for interactive elements
 export type InteractiveElementType = 'buttons' | 'inputs' | 'links' | 'editable' | 'custom' | 'selectable';
 
-export type ConstructorName = 
-  | 'HTMLInputElement' 
-  | 'HTMLTextAreaElement' 
-  | 'HTMLSelectElement' 
-  | 'HTMLButtonElement' 
-  | 'HTMLAnchorElement' 
+export type TagName = 
+  | 'INPUT' 
+  | 'TEXTAREA' 
+  | 'SELECT' 
+  | 'BUTTON' 
+  | 'A' 
+  | 'DIV' 
+  | 'SPAN' 
   | 'HTMLElement';
 
 // Information about an interactive element
 export interface InteractiveElementInfo {
   text: string;
-  constructorName: ConstructorName;
+  tagName: TagName;
   agenticPurposeId: string;
   type?: string;
   id?: string;
@@ -100,9 +102,9 @@ export type TextExtractor = () => string;
 
 // Available text extractors
 export interface TextExtractors {
-  HTMLInputElement: TextExtractor;
-  HTMLTextAreaElement: TextExtractor;
-  HTMLSelectElement: TextExtractor;
+  INPUT: TextExtractor;
+  TEXTAREA: TextExtractor;
+  SELECT: TextExtractor;
   DEFAULT: TextExtractor;
 }
 
