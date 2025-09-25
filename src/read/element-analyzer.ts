@@ -19,7 +19,8 @@ export function getElementText(element: Element): string {
       return [
         input.placeholder && `Placeholder: ${input.placeholder}`,
         input.value && `Value: ${input.value}`,
-        input.getAttribute('aria-label') && `Aria-label: ${input.getAttribute('aria-label')}`
+        input.getAttribute('aria-label') && `Aria-label: ${input.getAttribute('aria-label')}`,
+        input.name && `Name: ${input.name}`
       ].filter(Boolean).join(' | ');
     },
     
@@ -28,7 +29,8 @@ export function getElementText(element: Element): string {
       return [
         textarea.placeholder && `Placeholder: ${textarea.placeholder}`,
         textarea.value && `Value: ${textarea.value}`,
-        textarea.getAttribute('aria-label') && `Aria-label: ${textarea.getAttribute('aria-label')}`
+        textarea.getAttribute('aria-label') && `Aria-label: ${textarea.getAttribute('aria-label')}`,
+        textarea.name && `Name: ${textarea.name}`
       ].filter(Boolean).join(' | ');
     },
     
