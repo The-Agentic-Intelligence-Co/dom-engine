@@ -18,7 +18,8 @@ export function getElementText(element: Element): string {
       const input = element as HTMLInputElement;
       return [
         input.placeholder && `Placeholder: ${input.placeholder}`,
-        input.value && `Value: ${input.value}`
+        input.value && `Value: ${input.value}`,
+        input.getAttribute('aria-label') && `Aria-label: ${input.getAttribute('aria-label')}`
       ].filter(Boolean).join(' | ');
     },
     
@@ -26,7 +27,8 @@ export function getElementText(element: Element): string {
       const textarea = element as HTMLTextAreaElement;
       return [
         textarea.placeholder && `Placeholder: ${textarea.placeholder}`,
-        textarea.value && `Value: ${textarea.value}`
+        textarea.value && `Value: ${textarea.value}`,
+        textarea.getAttribute('aria-label') && `Aria-label: ${textarea.getAttribute('aria-label')}`
       ].filter(Boolean).join(' | ');
     },
     
