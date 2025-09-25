@@ -6,7 +6,7 @@
  * Generates a unique ID using crypto.randomUUID()
  */
 export function generateUniqueId(): string {
-  return crypto.randomUUID();
+  return crypto.randomUUID().substring(0, 8);
 }
 
 /**
