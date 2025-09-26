@@ -85,13 +85,64 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
   let totalProcessed = 0;
   
   for (const element of allElements) {
-    if (!isElementVisible(element, domContext)) continue;
+    // Debug: Log elements that are being processed
+    const isInput = element.tagName === 'INPUT';
+    const isTextarea = element.tagName === 'TEXTAREA';
+    const isContentEditable = (element as HTMLElement).contentEditable === 'true';
+    
+    if (isInput || isTextarea || isContentEditable) {
+      console.log('🔍 Processing element:', {
+        tagName: element.tagName,
+        id: element.id,
+        className: element.className,
+        type: (element as HTMLInputElement).type,
+        contentEditable: (element as HTMLElement).contentEditable,
+        isInput,
+        isTextarea,
+        isContentEditable
+      });
+    }
+    
+    if (!isElementVisible(element, domContext)) {
+      if (isInput || isTextarea || isContentEditable) {
+        console.log('❌ Element DISCARDED - Not visible:', {
+          tagName: element.tagName,
+          id: element.id,
+          className: element.className,
+          type: (element as HTMLInputElement).type,
+          contentEditable: (element as HTMLElement).contentEditable,
+          rect: element.getBoundingClientRect(),
+          style: {
+            display: domContext.window.getComputedStyle(element).display,
+            visibility: domContext.window.getComputedStyle(element).visibility,
+            opacity: domContext.window.getComputedStyle(element).opacity
+          }
+        });
+      }
+      continue;
+    }
     
     let textContent = getElementText(element);
     const isButtonWithSvgIcon = !textContent && hasSvgIcon(element);
     
     // Skip elements without text content, unless it's a button with SVG icon
-    if (!textContent && !isButtonWithSvgIcon) continue;
+    if (!textContent && !isButtonWithSvgIcon) {
+      if (isInput || isTextarea || isContentEditable) {
+        console.log('❌ Element DISCARDED - No text content:', {
+          tagName: element.tagName,
+          id: element.id,
+          className: element.className,
+          type: (element as HTMLInputElement).type,
+          contentEditable: (element as HTMLElement).contentEditable,
+          textContent: textContent,
+          placeholder: (element as HTMLInputElement).placeholder,
+          value: (element as HTMLInputElement).value,
+          ariaLabel: element.getAttribute('aria-label'),
+          name: (element as HTMLInputElement).name
+        });
+      }
+      continue;
+    }
     
     // Handle button with SVG icon - assign text content
     if (isButtonWithSvgIcon) {
@@ -123,6 +174,20 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     // Find category
     const category = Object.keys(categorizers).find(key => categorizers[key as keyof ElementCategorizers](element)) || 'selectable';
     (categorized[category as keyof CategorizedElements] as InteractiveElementInfo[]).push(elementInfo);
+    
+    if (isInput || isTextarea || isContentEditable) {
+      console.log('✅ Element INCLUDED:', {
+        tagName: element.tagName,
+        id: element.id,
+        className: element.className,
+        type: (element as HTMLInputElement).type,
+        contentEditable: (element as HTMLElement).contentEditable,
+        category: category,
+        textContent: textContent,
+        elementInfo: elementInfo
+      });
+    }
+    
     totalProcessed++;
   }
   
