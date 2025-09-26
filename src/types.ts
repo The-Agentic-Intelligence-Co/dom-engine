@@ -13,6 +13,7 @@ export type TagName =
   | 'A' 
   | 'DIV' 
   | 'SPAN' 
+  | 'CONTENTEDITABLE'
   | 'HTMLElement';
 
 // Information about an interactive element
@@ -104,6 +105,7 @@ export interface TextExtractors {
   INPUT: TextExtractor;
   TEXTAREA: TextExtractor;
   SELECT: TextExtractor;
+  CONTENTEDITABLE: TextExtractor;
   DEFAULT: TextExtractor;
 }
 

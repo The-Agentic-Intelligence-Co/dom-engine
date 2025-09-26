@@ -13,6 +13,11 @@ import { cleanText } from '../utils/helpers';
 export function getElementText(element: Element): string {
   const tagName = element.tagName as TagName;
   
+  // Determine the appropriate tagName for contenteditable elements
+  const effectiveTagName = (element as HTMLElement).contentEditable === 'true' 
+    ? 'CONTENTEDITABLE' 
+    : tagName;
+  
   const textExtractors: TextExtractors = {
     INPUT: () => {
       const input = element as HTMLInputElement;
@@ -39,10 +44,21 @@ export function getElementText(element: Element): string {
       return select.selectedOptions[0]?.textContent || '';
     },
     
+    CONTENTEDITABLE: () => {
+      const text = element.textContent?.trim() || '';
+      return [
+        text && `Content: ${text}`,
+        element.getAttribute('placeholder') && `Placeholder: ${element.getAttribute('placeholder')}`,
+        element.getAttribute('aria-label') && `Aria-label: ${element.getAttribute('aria-label')}`,
+        element.getAttribute('name') && `Name: ${element.getAttribute('name')}`,
+        !text && '[Contenteditable Element]' // Fallback for empty contenteditable elements
+      ].filter(Boolean).join(' | ');
+    },
+    
     DEFAULT: () => element.textContent || ''
   };
   
-  const extractor = textExtractors[tagName as keyof TextExtractors] || textExtractors.DEFAULT;
+  const extractor = textExtractors[effectiveTagName as keyof TextExtractors] || textExtractors.DEFAULT;
   return cleanText(extractor());
 }
 
