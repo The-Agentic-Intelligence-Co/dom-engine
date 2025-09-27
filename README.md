@@ -17,41 +17,54 @@ npm install @agentic-intelligence/dom-engine
 ### Basic Usage
 
 ```typescript
-import { getInteractiveContext, scrollToNewContent } from '@agentic-intelligence/dom-engine';
+import { getInteractiveContext, scrollToNewContent, executeActions } from '@agentic-intelligence/dom-engine';
 
-// Get interactive elements from DOM (no parameters needed!)
-const domData = getInteractiveContext();
+// 1. Analyze page and get interactive elements
+const domData = getInteractiveContext({ injectTrackers: true });
 console.log('Interactive elements:', domData.interactiveElements);
 console.log('Scroll info:', domData.scrollInfo);
 
-// With interactive elements tracking (adds agentic-purpose-id attributes)
-const domDataWithTracking = getInteractiveContext({ injectTrackers: true });
+// 2. Execute actions on elements
+const actions = [
+  {
+    agenticPurposeId: domData.interactiveElements.inputs[0].agenticPurposeId,
+    actionType: "type",
+    value: "hello@example.com"
+  },
+  {
+    agenticPurposeId: domData.interactiveElements.buttons[0].agenticPurposeId,
+    actionType: "click"
+  }
+];
 
-// With custom DOM context (for extensions, iframes, etc.)
+const result = executeActions(actions);
+console.log('Actions executed:', result.results);
+
+// 3. Navigate with smart scroll
+const scrollResult = scrollToNewContent();
+if (scrollResult.success) {
+  console.log('Scrolled to:', scrollResult.scrolledTo);
+}
+```
+
+### DOM Analysis
+
+```typescript
+import { getInteractiveContext } from '@agentic-intelligence/dom-engine';
+
+// Analyze entire page
+const domData = getInteractiveContext({ injectTrackers: true });
+console.log('Buttons found:', domData.interactiveElements.buttons);
+console.log('Inputs found:', domData.interactiveElements.inputs);
+console.log('Links found:', domData.interactiveElements.links);
+console.log('Total elements:', domData.interactiveElements.total);
+
+// With custom context (for extensions, iframes, etc.)
 const customContext = { document: someDocument, window: someWindow };
 const domDataCustom = getInteractiveContext({ 
   injectTrackers: true,
   context: customContext 
 });
-
-// Scroll to new content (no parameters needed!)
-const scrollResult = scrollToNewContent();
-if (scrollResult.success) {
-  console.log('Scroll successful to:', scrollResult.scrolledTo);
-}
-```
-
-### Interactive Elements Analysis
-
-```typescript
-import { getInteractiveContext } from '@agentic-intelligence/dom-engine';
-
-// Analyze entire page (no parameters needed!)
-const domData = getInteractiveContext();
-console.log('Buttons found:', domData.interactiveElements.buttons);
-console.log('Inputs found:', domData.interactiveElements.inputs);
-console.log('Links found:', domData.interactiveElements.links);
-console.log('Total elements:', domData.interactiveElements.total);
 ```
 
 ### Example Response
@@ -124,6 +137,56 @@ const result = scrollToNewContent();
 console.log('Scrolled to:', result.scrolledTo);
 ```
 
+### Action Execution
+
+```typescript
+import { executeActions } from '@agentic-intelligence/dom-engine';
+
+// Execute multiple actions
+const actions = [
+  {
+    agenticPurposeId: "input-email",
+    actionType: "type",
+    value: "user@example.com"
+  },
+  {
+    agenticPurposeId: "submit-button",
+    actionType: "click"
+  }
+];
+
+const result = executeActions(actions);
+console.log('Results:', result.results);
+
+// With custom context
+const customContext = { document: someDoc, window: someWin };
+const resultCustom = executeActions(actions, customContext);
+```
+
+**Available Action Types:**
+- `click`: Click on buttons, links, or any clickable element
+- `type`: Type text into inputs, textareas, or contentEditable elements
+
+**Human-like Interaction:**
+- Simulates realistic mouse events with coordinates
+- Multiple fallback methods for reliable clicking
+- Proper event sequences (mouseover, mousedown, mouseup, click)
+- Keyboard events for activation
+
+### Scroll Management
+
+```typescript
+import { scrollToNewContent } from '@agentic-intelligence/dom-engine';
+
+// Smart scroll to new content
+const scrollResult = scrollToNewContent();
+console.log('Scrolled to:', scrollResult.scrolledTo);
+
+// With custom context
+const customContext = { document: someDoc, window: someWin };
+const result = scrollToNewContent(customContext);
+```
+
 **Smart Scroll Behavior:**
 - If there's new content below: scrolls to the next unseen content
 - If no new content available: scrolls back to the top (pixel 0)
@@ -134,23 +197,116 @@ console.log('Scrolled to:', result.scrolledTo);
 ```
 src/
 ├── core/
-│   └── dom-engine.ts          # Main engine
+│   └── dom-engine.ts          # Main DOM analysis engine
 ├── read/
-│   ├── element-analyzer.ts    # Element analysis
-│   └── interactive-finder.ts  # Interactive element finder
+│   ├── element-analyzer.ts    # Element text extraction and analysis
+│   └── interactive-finder.ts  # Interactive element detection
 ├── scroll/
-│   └── scroll-manager.ts      # Scroll management
+│   └── scroll-manager.ts      # Scroll calculation and navigation
+├── actions/
+│   ├── executor.ts            # Action coordination and execution
+│   ├── click.ts               # Click action implementation
+│   ├── type.ts                # Type action implementation
+│   └── raw.ts                 # Original extracted code
 ├── utils/
-│   └── helpers.ts             # Utilities
-├── types.ts                   # Type definitions
-└── index.ts                   # Entry point
+│   └── helpers.ts             # Utility functions
+├── types.ts                   # TypeScript type definitions
+└── index.ts                   # Public API exports
 ```
 
 ## Use Cases
 
-- **E2E Testing**: Automated testing tools
-- **Web Scraping**: Intelligent data extraction
-- **Browser Agents**: AI agents that interact with web pages
+### 🤖 AI Agents & Automation
+```typescript
+// AI agent workflow
+const domData = getInteractiveContext({ injectTrackers: true });
+const actions = aiAgent.decideActions(domData.interactiveElements);
+const result = executeActions(actions);
+```
+
+### 🧪 E2E Testing
+```typescript
+// Automated testing
+const actions = [
+  { agenticPurposeId: "email-input", actionType: "type", value: "test@example.com" },
+  { agenticPurposeId: "submit-btn", actionType: "click" }
+];
+const result = executeActions(actions);
+assert(result.results.every(r => r.success));
+```
+
+### 🕷️ Web Scraping
+```typescript
+// Intelligent data extraction
+const domData = getInteractiveContext();
+const links = domData.interactiveElements.links;
+// Process and extract data from interactive elements
+```
+
+### 🔌 Browser Extensions
+```typescript
+// Extension content script
+const customContext = { document, window };
+const domData = getInteractiveContext({ 
+  injectTrackers: true, 
+  context: customContext 
+});
+```
+
+## Features
+
+### ✅ Core Functionality
+- **Smart Element Analysis**: Automatically detects interactive elements (buttons, inputs, links)
+- **Advanced Categorization**: Classifies elements by type and functionality
+- **Human-like Actions**: Click and type with realistic event simulation
+- **Smart Scroll Management**: Intelligent scroll control with automatic top return
+- **Visibility Filtering**: Only processes actually visible elements
+- **Element Tracking**: Inject unique IDs for agent tracking and interaction
+
+### ✅ Technical Features
+- **Zero Dependencies**: Pure JavaScript, no external libraries
+- **Cross-Platform**: Works in modern browsers and Node.js
+- **Custom DOM Context**: Support for analyzing different document contexts (extensions, iframes)
+- **TypeScript Support**: Full type definitions and IntelliSense
+- **Modular Architecture**: Clean separation of concerns
+
+### 🔲 Planned Features
+- **Interaction History**: Track and maintain history of interacted elements
+- **Advanced Actions**: Hover, drag & drop, keyboard shortcuts
+- **Iframe Processing**: Enhanced support for analyzing and interacting with iframe content
+- **Performance Optimization**: Lazy loading and caching for large pages
+
+## API Reference
+
+### Core Functions
+
+#### `getInteractiveContext(options?)`
+Analyzes the DOM and returns interactive elements with scroll information.
+
+**Parameters:**
+- `options.injectTrackers?: boolean` - Inject unique IDs for action tracking
+- `options.context?: DOMContext` - Custom DOM context for extensions/iframes
+
+**Returns:** `DOMExtractionResult`
+
+#### `executeActions(actions, context?)`
+Executes multiple actions on DOM elements.
+
+**Parameters:**
+- `actions: Action[]` - Array of actions to execute
+- `context?: DOMContext` - Custom DOM context
+
+**Returns:** `ActionsResult`
+
+#### `scrollToNewContent(context?)`
+Scrolls to new content or returns to top if no new content available.
+
+**Parameters:**
+- `context?: DOMContext` - Custom DOM context
+
+**Returns:** `ScrollResult`
+
+### Types
 
 ## Roadmap
 

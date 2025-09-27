@@ -109,3 +109,30 @@ export interface DOMAnalysisOptions {
   injectTrackers?: boolean;
   context?: DOMContext;
 }
+
+// Action types for DOM interaction
+export type ActionType = 'click' | 'type';
+
+// Individual action to execute
+export interface Action {
+  agenticPurposeId: string;
+  actionType: ActionType;
+  value?: string; // Required only when actionType is 'type'
+}
+
+// Result of a single action execution
+export interface ActionResult {
+  agenticPurposeId: string;
+  success: boolean;
+  action?: ActionType;
+  message?: string;
+  error?: string;
+}
+
+// Result of executing multiple actions
+export interface ActionsResult {
+  success: boolean;
+  results: ActionResult[];
+  message?: string;
+  error?: string;
+}

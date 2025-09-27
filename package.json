@@ -1,6 +1,6 @@
 {
   "name": "@agentic-intelligence/dom-engine",
-  "version": "1.1.6-dev.7",
+  "version": "1.2.0-dev.0",
   "description": "Agentic DOM Intelligence - A lightweight TypeScript library for DOM analysis and manipulation, designed for web automation and AI agents",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
@@ -35,7 +35,11 @@
     "browser-automation",
     "dom-manipulation",
     "interactive-elements",
-    "scroll-management"
+    "scroll-management",
+    "action-execution",
+    "human-like-interaction",
+    "click-simulation",
+    "type-simulation"
   ],
   "author": {
     "name": "Luis C",
