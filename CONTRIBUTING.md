@@ -201,23 +201,6 @@ npm install git+https://github.com/The-Agentic-Intelligence-Co/dom-engine.git#v1
 npm install git+https://github.com/The-Agentic-Intelligence-Co/dom-engine.git
 ```
 
-## Testing
-
-Currently, the project doesn't have automated tests. When adding tests:
-
-1. Create test files in `tests/` directory
-2. Use a testing framework like Jest or Vitest
-3. Add test script to package.json
-4. Run tests before committing
-
-## Code Style
-
-- Use TypeScript for all source files
-- Follow ESLint configuration
-- Use meaningful variable and function names
-- Add comments for complex logic
-- Keep functions small and focused
-
 ## Pull Request Guidelines
 
 1. **Create a descriptive title**
