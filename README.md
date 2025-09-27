@@ -54,6 +54,61 @@ console.log('Links found:', domData.interactiveElements.links);
 console.log('Total elements:', domData.interactiveElements.total);
 ```
 
+### Example Response
+
+Here's what a typical response looks like:
+
+```typescript
+const domData = getInteractiveContext({ injectTrackers: true });
+
+// Example response structure:
+// Note: agenticPurposeId is a unique identifier that AI agents can use to reference
+// and interact with specific elements when performing actions on the page.
+{
+  interactiveElements: {
+    total: 5,
+    buttons: [
+      {
+        text: "Submit",
+        agenticPurposeId: "a1b2c3d4",
+        className: "btn btn-primary",
+        onclick: "Yes",
+        tabindex: 0
+      }
+    ],
+    inputs: [
+      {
+        text: "Placeholder: Enter your email | Name: email",
+        agenticPurposeId: "e5f6g7h8",
+        type: "email",
+        className: "form-control",
+        onclick: "No",
+        tabindex: 0
+      }
+    ],
+    links: [
+      {
+        text: "Text: Learn more | Title: Documentation",
+        agenticPurposeId: "i9j0k1l2",
+        href: "/docs",
+        className: "nav-link",
+        onclick: "No",
+        tabindex: 0
+      }
+    ],
+    ...
+  },
+  scrollInfo: {
+    totalHeight: 2000,
+    viewportHeight: 800,
+    scrollTop: 0,
+    verticalScrollPercentage: 0,
+    remainingHeight: 1200,
+    nextContentPixel: 800
+  }
+}
+```
+
 ### Scroll Management
 
 ```typescript
