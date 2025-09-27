@@ -6,7 +6,6 @@ import {
   InteractiveElementInfo, 
   CategorizedElements, 
   ElementCategorizers, 
-  TagName,
   DOMAnalysisOptions
 } from '../types';
 import { generateUniqueId, filterValidProperties, filterStylingClasses } from '../utils/helpers';
@@ -157,9 +156,7 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     
     const elementInfo = filterValidProperties({
       text: textContent,
-      tagName: element.tagName as TagName,
       agenticPurposeId: injectTrackers ? domId : '',
-      type: (element as HTMLInputElement).type,
       id: element.id?.substring(0, 40),
       className: filterStylingClasses(element.className),
       onclick: (element as HTMLElement).onclick ? 'Yes' : 'No',

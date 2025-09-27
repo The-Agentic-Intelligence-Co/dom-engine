@@ -5,23 +5,11 @@
 // Types for interactive elements
 export type InteractiveElementType = 'buttons' | 'inputs' | 'links' | 'editable' | 'custom' | 'selectable';
 
-export type TagName = 
-  | 'INPUT' 
-  | 'TEXTAREA' 
-  | 'SELECT' 
-  | 'BUTTON' 
-  | 'A' 
-  | 'DIV' 
-  | 'SPAN' 
-  | 'CONTENTEDITABLE'
-  | 'HTMLElement';
 
 // Information about an interactive element
 export interface InteractiveElementInfo {
   text: string;
-  tagName: TagName;
   agenticPurposeId: string;
-  type?: string;
   id?: string;
   className: string;
   onclick: 'Yes' | 'No';

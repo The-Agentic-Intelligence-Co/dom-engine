@@ -2,7 +2,7 @@
  * DOM element analyzer
  */
 
-import { TagName, TextExtractors, SiblingText, DOMContext } from '../types';
+import { TextExtractors, SiblingText, DOMContext } from '../types';
 import { cleanText } from '../utils/helpers';
 
 /**
@@ -11,7 +11,7 @@ import { cleanText } from '../utils/helpers';
  * @returns Extracted text from the element
  */
 export function getElementText(element: Element): string {
-  const tagName = element.tagName as TagName;
+  const tagName = element.tagName;
   
   // Determine the appropriate tagName for contenteditable elements
   const effectiveTagName = (element as HTMLElement).contentEditable === 'true' 
