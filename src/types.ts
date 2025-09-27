@@ -105,6 +105,7 @@ export interface TextExtractors {
   INPUT: TextExtractor;
   TEXTAREA: TextExtractor;
   SELECT: TextExtractor;
+  A: TextExtractor;
   CONTENTEDITABLE: TextExtractor;
   DEFAULT: TextExtractor;
 }

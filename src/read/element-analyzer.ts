@@ -44,6 +44,17 @@ export function getElementText(element: Element): string {
       return select.selectedOptions[0]?.textContent || '';
     },
     
+    A: () => {
+      const link = element as HTMLAnchorElement;
+      return [
+        link.textContent?.trim() && `Text: ${link.textContent.trim()}`,
+        link.href && `Href: ${link.href}`,
+        link.getAttribute('aria-label') && `Aria-label: ${link.getAttribute('aria-label')}`,
+        link.title && `Title: ${link.title}`,
+        link.getAttribute('name') && `Name: ${link.getAttribute('name')}`
+      ].filter(Boolean).join(' | ');
+    },
+    
     CONTENTEDITABLE: () => {
       const text = element.textContent?.trim() || '';
       return [
