@@ -145,12 +145,12 @@ import { executeActions } from '@agentic-intelligence/dom-engine';
 // Execute multiple actions
 const actions = [
   {
-    agenticPurposeId: "input-email",
+    agenticPurposeId: "a1b2c3d4",
     actionType: "type",
     value: "user@example.com"
   },
   {
-    agenticPurposeId: "submit-button",
+    agenticPurposeId: "a1b2c3d4",
     actionType: "click"
   }
 ];
@@ -214,7 +214,7 @@ src/
 └── index.ts                   # Public API exports
 ```
 
-## Use Cases
+## Use Case Example
 
 ### 🤖 AI Agents & Automation
 ```typescript
@@ -233,14 +233,6 @@ const actions = [
 ];
 const result = executeActions(actions);
 assert(result.results.every(r => r.success));
-```
-
-### 🕷️ Web Scraping
-```typescript
-// Intelligent data extraction
-const domData = getInteractiveContext();
-const links = domData.interactiveElements.links;
-// Process and extract data from interactive elements
 ```
 
 ### 🔌 Browser Extensions
