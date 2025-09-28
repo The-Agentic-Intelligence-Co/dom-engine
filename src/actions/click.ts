@@ -179,6 +179,7 @@ export function executeClickAction(element: Element, agenticPurposeId: string): 
     return {
       agenticPurposeId,
       success: false,
+      action: 'click',
       error: `All click methods failed. Errors: ${errors.join('; ')}`
     };
   }

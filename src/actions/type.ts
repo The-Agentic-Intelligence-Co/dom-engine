@@ -286,6 +286,7 @@ export function executeTypeAction(element: Element, value: string, agenticPurpos
     return {
       agenticPurposeId,
       success: false,
+      action: 'type',
       error: 'Element is not a text input field'
     };
   }

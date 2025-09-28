@@ -19,6 +19,7 @@ function executeSingleAction(action: Action, context?: DOMContext): ActionResult
     return {
       agenticPurposeId: action.agenticPurposeId,
       success: false,
+      action: action.actionType,
       error: `Element with agentic-purpose-id "${action.agenticPurposeId}" not found`
     };
   }
@@ -31,6 +32,7 @@ function executeSingleAction(action: Action, context?: DOMContext): ActionResult
         return {
           agenticPurposeId: action.agenticPurposeId,
           success: false,
+          action: action.actionType,
           error: 'Value is required for type action'
         };
       }
@@ -39,6 +41,7 @@ function executeSingleAction(action: Action, context?: DOMContext): ActionResult
       return {
         agenticPurposeId: action.agenticPurposeId,
         success: false,
+        action: action.actionType,
         error: `Unknown action type: ${action.actionType}`
       };
     }
@@ -46,6 +49,7 @@ function executeSingleAction(action: Action, context?: DOMContext): ActionResult
     return {
       agenticPurposeId: action.agenticPurposeId,
       success: false,
+      action: action.actionType,
       error: actionError instanceof Error ? actionError.message : 'Action execution failed'
     };
   }
@@ -66,10 +70,13 @@ export function executeActions(actions: Action[], context?: DOMContext): Actions
       results.push(result);
     }
     
+    const allSuccessful = results.every(result => result.success);
     return {
-      success: true,
+      success: allSuccessful,
       results,
-      message: `Executed ${actions.length} DOM actions`
+      message: allSuccessful 
+        ? `Successfully executed ${actions.length} DOM actions`
+        : `${results.filter(r => r.success).length}/${actions.length} DOM actions executed successfully`
     };
   } catch (error) {
     return {

@@ -124,7 +124,7 @@ export interface Action {
 export interface ActionResult {
   agenticPurposeId: string;
   success: boolean;
-  action?: ActionType;
+  action: ActionType;
   message?: string;
   error?: string;
 }
