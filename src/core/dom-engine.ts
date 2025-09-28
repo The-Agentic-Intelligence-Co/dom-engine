@@ -4,7 +4,7 @@
 
 import { DOMExtractionResult, DOMAnalysisOptions } from '../types';
 import { findInteractiveElements } from '../read/interactive-finder';
-import { calculateScrollInfo } from '../scroll/scroll-manager';
+import { calculateScrollInfo } from '../actions/scroll';
 
 /**
  * Main function to get interactive elements from the DOM

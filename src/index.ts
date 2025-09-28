@@ -6,7 +6,7 @@
 
 // Core functionality - Only the main methods that users need
 export { getInteractiveContext } from './core/dom-engine';
-export { scrollToNewContent } from './scroll/scroll-manager';
+export { scrollToNewContent } from './actions/scroll';
 export { executeActions } from './actions/executor';
 
 // Main types for library usage

@@ -88,28 +88,34 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     const isInput = element.tagName === 'INPUT';
     const isTextarea = element.tagName === 'TEXTAREA';
     const isContentEditable = (element as HTMLElement).contentEditable === 'true';
+    const isLink = element.tagName === 'A';
     
-    if (isInput || isTextarea || isContentEditable) {
+    if (isInput || isTextarea || isContentEditable || isLink) {
       console.log('🔍 Processing element:', {
         tagName: element.tagName,
         id: element.id,
         className: element.className,
         type: (element as HTMLInputElement).type,
         contentEditable: (element as HTMLElement).contentEditable,
+        href: (element as HTMLAnchorElement).href,
+        ariaLabel: element.getAttribute('aria-label'),
         isInput,
         isTextarea,
-        isContentEditable
+        isContentEditable,
+        isLink
       });
     }
     
     if (!isElementVisible(element, domContext)) {
-      if (isInput || isTextarea || isContentEditable) {
+      if (isInput || isTextarea || isContentEditable || isLink) {
         console.log('❌ Element DISCARDED - Not visible:', {
           tagName: element.tagName,
           id: element.id,
           className: element.className,
           type: (element as HTMLInputElement).type,
           contentEditable: (element as HTMLElement).contentEditable,
+          href: (element as HTMLAnchorElement).href,
+          ariaLabel: element.getAttribute('aria-label'),
           rect: element.getBoundingClientRect(),
           style: {
             display: domContext.window.getComputedStyle(element).display,
@@ -126,17 +132,18 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     
     // Skip elements without text content, unless it's a button with SVG icon
     if (!textContent && !isButtonWithSvgIcon) {
-      if (isInput || isTextarea || isContentEditable) {
+      if (isInput || isTextarea || isContentEditable || isLink) {
         console.log('❌ Element DISCARDED - No text content:', {
           tagName: element.tagName,
           id: element.id,
           className: element.className,
           type: (element as HTMLInputElement).type,
           contentEditable: (element as HTMLElement).contentEditable,
+          href: (element as HTMLAnchorElement).href,
+          ariaLabel: element.getAttribute('aria-label'),
           textContent: textContent,
           placeholder: (element as HTMLInputElement).placeholder,
           value: (element as HTMLInputElement).value,
-          ariaLabel: element.getAttribute('aria-label'),
           name: (element as HTMLInputElement).name
         });
       }
@@ -172,13 +179,15 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     const category = Object.keys(categorizers).find(key => categorizers[key as keyof ElementCategorizers](element)) || 'selectable';
     (categorized[category as keyof CategorizedElements] as InteractiveElementInfo[]).push(elementInfo);
     
-    if (isInput || isTextarea || isContentEditable) {
+    if (isInput || isTextarea || isContentEditable || isLink) {
       console.log('✅ Element INCLUDED:', {
         tagName: element.tagName,
         id: element.id,
         className: element.className,
         type: (element as HTMLInputElement).type,
         contentEditable: (element as HTMLElement).contentEditable,
+        href: (element as HTMLAnchorElement).href,
+        ariaLabel: element.getAttribute('aria-label'),
         category: category,
         textContent: textContent,
         elementInfo: elementInfo
