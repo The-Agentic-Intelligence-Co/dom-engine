@@ -27,6 +27,7 @@ export function getInteractiveSelectors(): string[] {
     // Links
     'a[href]',
     'a[onclick]',
+    'a[class*="cursor-pointer"]',
     
     // Elements with click events
     '[onclick]',
