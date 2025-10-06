@@ -106,6 +106,16 @@ export function findInteractiveElements(options: DOMAnalysisOptions = {}): Categ
     const domId = injectTrackers ? generateUniqueId() : '';
     if (injectTrackers) {
       element.setAttribute('agentic-purpose-id', domId);
+      
+      // Add click detection for tracked elements
+      element.addEventListener('click', () => {
+        // Access the current click method from the global scope
+        const currentMethod = (window as any).currentClickMethod || 'Unknown method';
+        console.log(`Click detected on tracked element: ${domId} - Method: ${currentMethod}`);
+        
+        // Establecer flag para detener ejecución
+        (window as any).clickDetected = true;
+      });
     }
     
     const elementInfo = filterValidProperties({

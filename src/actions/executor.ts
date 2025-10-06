@@ -70,13 +70,15 @@ export function executeActions(actions: Action[], context?: DOMContext): Actions
       results.push(result);
     }
     
-    const allSuccessful = results.every(result => result.success);
+    const anySuccessful = results.some(result => result.success);
+    const successCount = results.filter(r => r.success).length;
+    
     return {
-      success: allSuccessful,
+      success: anySuccessful,
       results,
-      message: allSuccessful 
-        ? `Successfully executed ${actions.length} DOM actions`
-        : `${results.filter(r => r.success).length}/${actions.length} DOM actions executed successfully`
+      message: anySuccessful 
+        ? `${successCount}/${actions.length} DOM actions executed successfully popo`
+        : `No DOM actions executed successfully lolo`
     };
   } catch (error) {
     return {

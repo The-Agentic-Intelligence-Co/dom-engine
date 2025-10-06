@@ -99,6 +99,7 @@ function simulateHumanClick(element: HTMLElement): void {
   }, 100);
 }
 
+
 /**
  * Executes click action on an element using multiple methods
  * @param element - Element to click
@@ -106,22 +107,30 @@ function simulateHumanClick(element: HTMLElement): void {
  * @returns ActionResult with execution result
  */
 export function executeClickAction(element: Element, agenticPurposeId: string): ActionResult {
+  
+  // Global variables to track current click method and detection
+  (window as any).currentClickMethod = '';
+  (window as any).clickDetected = false;
+  
   const clickMethods = [
     {
       name: 'Normal click',
       execute: () => {
+        (window as any).currentClickMethod = 'Normal click';
         (element as HTMLElement).click();
       }
     },
     {
       name: 'Human-like simulation',
       execute: () => {
+        (window as any).currentClickMethod = 'Human-like simulation';
         simulateHumanClick(element as HTMLElement);
       }
     },
     {
       name: 'Focus + Enter key',
       execute: () => {
+        (window as any).currentClickMethod = 'Focus + Enter key';
         (element as HTMLElement).focus();
         const enterEvent = new KeyboardEvent('keydown', {
           bubbles: true,
@@ -136,6 +145,7 @@ export function executeClickAction(element: Element, agenticPurposeId: string): 
     {
       name: 'Direct event dispatch with coordinates',
       execute: () => {
+        (window as any).currentClickMethod = 'Direct event dispatch with coordinates';
         const rect = (element as HTMLElement).getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
@@ -151,7 +161,50 @@ export function executeClickAction(element: Element, agenticPurposeId: string): 
         
         (element as HTMLElement).dispatchEvent(clickEvent);
       }
-    }
+    },
+    {
+      name: 'User interaction simulation',
+      execute: () => {
+        (window as any).currentClickMethod = 'User interaction simulation';
+        // Simular interacción completa del usuario
+        if (element instanceof HTMLElement) {
+          // 1. Hacer el elemento visible y accesible
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // 2. Focus del elemento
+          element.focus();
+          
+          // 3. Disparar eventos de interacción
+          const interactionEvents = [
+            'mouseenter',
+            'mouseover', 
+            'focus',
+            'activate'
+          ];
+          
+          interactionEvents.forEach((eventType, index) => {
+            setTimeout(() => {
+              const event = new Event(eventType, {
+                bubbles: true,
+                cancelable: true
+              });
+              element.dispatchEvent(event);
+            }, index * 10);
+          });
+          
+          // 4. Para elementos específicos, ejecutar su acción
+          if (element.tagName === 'A') {
+            // Para enlaces, navegar
+            const href = (element as HTMLAnchorElement).href;
+            if (href) {
+              setTimeout(() => {
+                window.location.href = href;
+              }, 50);
+            }
+          }
+        }
+      }
+    },
   ];
   
   let anyMethodSucceeded = false;
@@ -159,11 +212,18 @@ export function executeClickAction(element: Element, agenticPurposeId: string): 
   
   // Execute all methods
   clickMethods.forEach((method) => {
+    // Verificar si ya se detectó click para detener ejecución
+    if ((window as any).clickDetected) {
+      return;
+    }
+    
     try {
       method.execute();
+      console.log(`Click method "${method.name}" executed successfully`);
       anyMethodSucceeded = true;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.log(`Click method "${method.name}" failed: ${errorMessage}`);
       errors.push(`${method.name}: ${errorMessage}`);
     }
   });
