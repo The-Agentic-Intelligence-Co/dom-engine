@@ -4,7 +4,7 @@ DOM Engine
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
-A simple, lightweight library that turns website DOMs into actionable context for browser agents. Works with Chrome extensions and Puppeteer headless browsers.
+A simple, lightweight library that turns website DOMs into actionable context for browser agents. Supports both browser extension environments and headless browser automation via Puppeteer.
 
 ## Installation
 
