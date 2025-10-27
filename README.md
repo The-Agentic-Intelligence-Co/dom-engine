@@ -4,7 +4,7 @@ DOM Engine
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 
-A simple, lightweight library that turns website DOMs into actionable context for browser agents.
+A simple, lightweight library that turns website DOMs into actionable context for browser agents. Works with Chrome extensions and Puppeteer headless browsers.
 
 ## Installation
 
@@ -47,6 +47,8 @@ if (scrollResult.success) {
 }
 ```
 
+**Note:** `injectTrackers` adds a unique `agenticPurposeId` to each element that AI agents can use to reference and interact with elements. It also injects event listeners to detect clicks and evaluate if interactions were successful.
+
 ### DOM Analysis
 
 ```typescript
@@ -58,13 +60,6 @@ console.log('Buttons found:', domData.interactiveElements.buttons);
 console.log('Inputs found:', domData.interactiveElements.inputs);
 console.log('Links found:', domData.interactiveElements.links);
 console.log('Total elements:', domData.interactiveElements.total);
-
-// With custom context (for extensions, iframes, etc.)
-const customContext = { document: someDocument, window: someWindow };
-const domDataCustom = getInteractiveContext({ 
-  injectTrackers: true,
-  context: customContext 
-});
 ```
 
 ### Example Response
@@ -85,8 +80,7 @@ const domData = getInteractiveContext({ injectTrackers: true });
         text: "Submit",
         agenticPurposeId: "a1b2c3d4",
         className: "btn btn-primary",
-        onclick: "Yes",
-        tabindex: 0
+        ...
       }
     ],
     inputs: [
@@ -95,8 +89,7 @@ const domData = getInteractiveContext({ injectTrackers: true });
         agenticPurposeId: "e5f6g7h8",
         type: "email",
         className: "form-control",
-        onclick: "No",
-        tabindex: 0
+        ...
       }
     ],
     links: [
@@ -105,8 +98,7 @@ const domData = getInteractiveContext({ injectTrackers: true });
         agenticPurposeId: "i9j0k1l2",
         href: "/docs",
         className: "nav-link",
-        onclick: "No",
-        tabindex: 0
+        ...
       }
     ],
     ...
@@ -157,10 +149,6 @@ const actions = [
 
 const result = executeActions(actions);
 console.log('Results:', result.results);
-
-// With custom context
-const customContext = { document: someDoc, window: someWin };
-const resultCustom = executeActions(actions, customContext);
 ```
 
 **Available Action Types:**
@@ -181,16 +169,76 @@ import { scrollToNewContent } from '@agentic-intelligence/dom-engine';
 // Smart scroll to new content
 const scrollResult = scrollToNewContent();
 console.log('Scrolled to:', scrollResult.scrolledTo);
-
-// With custom context
-const customContext = { document: someDoc, window: someWin };
-const result = scrollToNewContent(customContext);
 ```
 
 **Smart Scroll Behavior:**
 - If there's new content below: scrolls to the next unseen content
 - If no new content available: scrolls back to the top (pixel 0)
 - Always returns `success: true` with the scroll position
+
+## Using with Puppeteer & Headless Browsers
+
+### Building the Bundle
+
+Before using with Puppeteer, create a browser-compatible bundle:
+
+```javascript
+// bundle-dom-engine.js
+const esbuild = require('esbuild');
+
+async function bundleDomEngine() {
+    try {
+        await esbuild.build({
+            entryPoints: [require.resolve('@agentic-intelligence/dom-engine')],
+            bundle: true,
+            format: 'iife',
+            globalName: 'DomEngine',
+            platform: 'browser',
+            target: 'es2015',
+            outfile: './dom-engine-bundle.js',
+            minify: false
+        });
+        console.log('✅ Bundle created successfully');
+    } catch (error) {
+        console.error('❌ Error creating bundle:', error);
+    }
+}
+
+bundleDomEngine();
+```
+
+### Injecting and Using with Puppeteer
+
+```javascript
+const puppeteer = require('puppeteer');
+const path = require('path');
+
+// Launch browser and navigate
+const browser = await puppeteer.launch({ headless: true });
+const page = await browser.newPage();
+await page.goto('https://example.com', { waitUntil: 'networkidle2' });
+
+// Inject the bundle
+const bundlePath = path.join(__dirname, 'dom-engine-bundle.js');
+await page.addScriptTag({ path: bundlePath });
+
+// Use dom-engine
+const domData = await page.evaluate(() => {
+    return DomEngine.getInteractiveContext({ 
+        injectTrackers: true
+    });
+});
+
+console.log('Found buttons:', domData.interactiveElements.buttons);
+
+// Click element by agenticPurposeId
+const button = domData.interactiveElements.buttons[0];
+await page.evaluate((purposeId) => {
+    const element = document.querySelector(`[data-agentic-purpose-id="${purposeId}"]`);
+    element?.click();
+}, button.agenticPurposeId);
+
+await browser.close();
 
 ## Project Structure
 
@@ -227,22 +275,13 @@ const result = executeActions(actions);
 ### 🧪 E2E Testing
 ```typescript
 // Automated testing
+const domData = getInteractiveContext({ injectTrackers: true });
 const actions = [
   { agenticPurposeId: "email-input", actionType: "type", value: "test@example.com" },
   { agenticPurposeId: "submit-btn", actionType: "click" }
 ];
 const result = executeActions(actions);
 assert(result.results.every(r => r.success));
-```
-
-### 🔌 Browser Extensions
-```typescript
-// Extension content script
-const customContext = { document, window };
-const domData = getInteractiveContext({ 
-  injectTrackers: true, 
-  context: customContext 
-});
 ```
 
 ## Features
@@ -327,3 +366,7 @@ Contributions are welcome! Please:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Made with ❤️ by **Luis Chapa Morin**
