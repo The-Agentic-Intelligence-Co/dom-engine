@@ -129,6 +129,11 @@ const result = scrollToNewContent();
 console.log('Scrolled to:', result.scrolledTo);
 ```
 
+**Smart Scroll Behavior:**
+- If there's new content below: scrolls to the next unseen content
+- If no new content available: scrolls back to the top (pixel 0)
+- Always returns `success: true` with the scroll position
+
 ### Action Execution
 
 ```typescript
@@ -160,21 +165,6 @@ console.log('Results:', result.results);
 - Multiple fallback methods for reliable clicking
 - Proper event sequences (mouseover, mousedown, mouseup, click)
 - Keyboard events for activation
-
-### Scroll Management
-
-```typescript
-import { scrollToNewContent } from '@agentic-intelligence/dom-engine';
-
-// Smart scroll to new content
-const scrollResult = scrollToNewContent();
-console.log('Scrolled to:', scrollResult.scrolledTo);
-```
-
-**Smart Scroll Behavior:**
-- If there's new content below: scrolls to the next unseen content
-- If no new content available: scrolls back to the top (pixel 0)
-- Always returns `success: true` with the scroll position
 
 ## Using with Puppeteer & Headless Browsers
 
@@ -239,6 +229,7 @@ await page.evaluate((purposeId) => {
 }, button.agenticPurposeId);
 
 await browser.close();
+```
 
 ## Project Structure
 
@@ -249,13 +240,11 @@ src/
 ├── read/
 │   ├── element-analyzer.ts    # Element text extraction and analysis
 │   └── interactive-finder.ts  # Interactive element detection
-├── scroll/
-│   └── scroll-manager.ts      # Scroll calculation and navigation
 ├── actions/
 │   ├── executor.ts            # Action coordination and execution
 │   ├── click.ts               # Click action implementation
 │   ├── type.ts                # Type action implementation
-│   └── raw.ts                 # Original extracted code
+│   └── scroll.ts              # Scroll action implementation
 ├── utils/
 │   └── helpers.ts             # Utility functions
 ├── types.ts                   # TypeScript type definitions
@@ -283,29 +272,6 @@ const actions = [
 const result = executeActions(actions);
 assert(result.results.every(r => r.success));
 ```
-
-## Features
-
-### ✅ Core Functionality
-- **Smart Element Analysis**: Automatically detects interactive elements (buttons, inputs, links)
-- **Advanced Categorization**: Classifies elements by type and functionality
-- **Human-like Actions**: Click and type with realistic event simulation
-- **Smart Scroll Management**: Intelligent scroll control with automatic top return
-- **Visibility Filtering**: Only processes actually visible elements
-- **Element Tracking**: Inject unique IDs for agent tracking and interaction
-
-### ✅ Technical Features
-- **Zero Dependencies**: Pure JavaScript, no external libraries
-- **Cross-Platform**: Works in modern browsers and Node.js
-- **Custom DOM Context**: Support for analyzing different document contexts (extensions, iframes)
-- **TypeScript Support**: Full type definitions and IntelliSense
-- **Modular Architecture**: Clean separation of concerns
-
-### 🔲 Planned Features
-- **Interaction History**: Track and maintain history of interacted elements
-- **Advanced Actions**: Hover, drag & drop, keyboard shortcuts
-- **Iframe Processing**: Enhanced support for analyzing and interacting with iframe content
-- **Performance Optimization**: Lazy loading and caching for large pages
 
 ## API Reference
 
@@ -336,8 +302,6 @@ Scrolls to new content or returns to top if no new content available.
 - `context?: DOMContext` - Custom DOM context
 
 **Returns:** `ScrollResult`
-
-### Types
 
 ## Roadmap
 
