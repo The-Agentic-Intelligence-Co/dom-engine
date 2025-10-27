@@ -70,8 +70,6 @@ Here's what a typical response looks like:
 const domData = getInteractiveContext({ injectTrackers: true });
 
 // Example response structure:
-// Note: agenticPurposeId is a unique identifier that AI agents can use to reference
-// and interact with specific elements when performing actions on the page.
 {
   interactiveElements: {
     total: 5,
