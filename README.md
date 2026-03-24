@@ -1,9 +1,9 @@
 DOM Engine
 
-[![npm version](https://img.shields.io/npm/v/@agentic-intelligence/dom-engine.svg)](https://www.npmjs.com/package/@agentic-intelligence/dom-engine)
-[![npm downloads](https://img.shields.io/npm/dt/@agentic-intelligence/dom-engine)](https://www.npmjs.com/package/@agentic-intelligence/dom-engine)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
+[![npm version](https://img.shields.io/npm/v/@agentic-intelligence/dom-engine.svg?style=for-the-badge)](https://www.npmjs.com/package/@agentic-intelligence/dom-engine)
+[![npm downloads](https://img.shields.io/npm/dt/@agentic-intelligence/dom-engine?style=for-the-badge)](https://www.npmjs.com/package/@agentic-intelligence/dom-engine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg?style=for-the-badge)](http://www.typescriptlang.org/)
 
 A simple, lightweight library that turns website DOMs into actionable context for browser agents. Supports both browser extension environments and headless browser automation via Puppeteer.
 
